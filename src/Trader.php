@@ -2,14 +2,14 @@
 
 namespace Xoptov\TradingBot;
 
-use Xoptov\TradingBot\Connector\ConnectorInterface;
-use Xoptov\TradingBot\Connector\HandlerInterface;
+use Xoptov\TradingBot\Provider\ProviderInterface;
+use Xoptov\TradingBot\Provider\HandlerInterface;
 use Xoptov\TradingBot\Chart\Chart;
 use Xoptov\TradingBot\Model\Order;
 
 class Trader implements TraderInterface, HandlerInterface
 {
-    /** @var ConnectorInterface */
+    /** @var ProviderInterface */
     private $connector;
 
     /** @var OrderBook */
@@ -26,26 +26,11 @@ class Trader implements TraderInterface, HandlerInterface
 
     /**
      * Trader constructor.
-     * @param ConnectorInterface $connector
+     * @param ProviderInterface $connector
      */
-    public function __construct(ConnectorInterface $connector)
+    public function __construct(ProviderInterface $connector)
     {
         $this->connector = $connector;
-    }
-
-    public function onTick(array $data)
-    {
-
-    }
-
-    public function onBook(array $data)
-    {
-
-    }
-
-    public function onTrade(array $data)
-    {
-
     }
 
     /**
@@ -75,10 +60,48 @@ class Trader implements TraderInterface, HandlerInterface
     /**
      * {@inheritdoc}
      */
+    public function getOrders()
+    {
+        $orders = array();
+
+        foreach ($this->orders as $order) {
+            $orders[] = clone $order;
+        }
+
+        return $orders;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getChart()
     {
         $chart = clone $this->chart;
 
         return $chart;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onTick(array $data)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onBook(array $data)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onTrade(array $data)
+    {
+
     }
 }

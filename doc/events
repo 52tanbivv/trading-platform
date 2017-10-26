@@ -1,0 +1,28 @@
+Ticker
+---
+| Market   | Currency Pair | Last Price | Low ASK | Low ASK Vol | High BID | High BID Vol | Change % | Base Vol | Quote Vol | 24h High | 24h Low |
+|----------|---------------|------------|---------|-------------|----------|--------------|----------|----------|-----------|----------|---------|
+| Poloniex | +             | +          | +       | -           | +        | -            | +        | +        | +         | +        | +       |
+| Bitfinex | -             | +          | +       | +           | +        | +            | +        | -        | -         | +        | +       |
+
+Trade
+---
+| Market   | Trade ID | Type | Rate | Vol | Date | Total |
+|----------|----------|------|------|-----|------|-------|
+| Poloniex | +        | +    | +    | +   | +    | +     |
+| Bitfenix | +        | -    | +    | +   | -    | -     |
+| WEX      | -        | +    | +    | +   | -    | -     |
+
+Book
+---
+| Market   | Type | Rate | Vol | Total |
+|----------|------|------|-----|-------|
+| Poloniex | +    | +    | +   | -     |
+| Bitfinex | +    | +    | +   | +     |
+| WEX      | +    | +    | +   | -     |
+
+Response
+---
+| Market   | Balance |
+|----------|---------|
+| Poloniex |

@@ -3,6 +3,7 @@
 namespace Xoptov\TradingBot;
 
 use Xoptov\TradingBot\Model\Active;
+use Xoptov\TradingBot\Model\Order;
 use Xoptov\TradingBot\Chart\Chart;
 
 interface TraderInterface
@@ -21,6 +22,11 @@ interface TraderInterface
      * @return Active[]
      */
     public function getActives();
+
+    /**
+     * @return Order[]
+     */
+    public function getOrders();
 
     /**
      * @return Chart
