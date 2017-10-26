@@ -10,8 +10,11 @@ class Order
     /** @var string */
     private $type;
 
-    /** @var CurrencyPair */
-    private $currencyPair;
+    /** @var Active */
+    private $active;
+
+    /** @var Currency */
+    private $currency;
 
     /** @var float */
     private $rate;
@@ -39,16 +42,18 @@ class Order
     /**
      * Order constructor.
      * @param string $type
-     * @param CurrencyPair $currencyPair
+     * @param Active $active
+     * @param Currency $currency
      * @param float $rate
      * @param float $volume
      * @param float $total
      * @param \DateTime $createdAt
      */
-    public function __construct($type, CurrencyPair $currencyPair, $rate, $volume, $total, \DateTime $createdAt)
+    public function __construct($type, Active $active, Currency $currency, $rate, $volume, $total, \DateTime $createdAt)
     {
         $this->type = $type;
-        $this->currencyPair = $currencyPair;
+        $this->active = $active;
+        $this->currency = $currency;
         $this->rate = $rate;
         $this->volume = $volume;
         $this->total = $total;
@@ -64,13 +69,23 @@ class Order
     }
 
     /**
-     * @return CurrencyPair
+     * @return Active
      */
-    public function getCurrencyPair()
+    public function getActive()
     {
-        $currencyPair = clone $this->currencyPair;
+        $active = clone $this->active;
 
-        return $currencyPair;
+        return $active;
+    }
+
+    /**
+     * @return Currency
+     */
+    public function getCurrency()
+    {
+        $currency = clone $this->currency;
+
+        return $currency;
     }
 
     /**

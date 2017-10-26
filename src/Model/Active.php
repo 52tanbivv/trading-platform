@@ -19,10 +19,13 @@ class Active
     private $total = 0;
 
     /** @var Trade[] */
-    private $trades;
+    private $trades = array();
 
     /** @var \DateTime */
     private $createdAt;
+
+    /** @var Order[] Open orders with this active */
+    private $orders = array();
 
     /**
      * Active constructor.
@@ -119,5 +122,47 @@ class Active
         }
 
         return $trades;
+    }
+
+    /**
+     * @param Order $order
+     */
+    public function addOrder(Order $order)
+    {
+        if ($order->getActive() !== $this) {
+            throw new \LogicException("Active in order and this active must be the same.");
+        }
+
+        array_push($this->orders, $order);
+    }
+
+    /**
+     * @return Order[]
+     */
+    public function getOrders()
+    {
+        $orders = array();
+
+        foreach ($this->orders as $order) {
+            $orders[] = clone $order;
+        }
+
+        return $orders;
+    }
+
+    /**
+     * @return float
+     */
+    public function getVolumeInOrders()
+    {
+        $volume = 0.0;
+
+        array_walk($this->orders, function(Order $order, $key, &$volume) {
+            if ($order->getType() === Order::TYPE_ASK) {
+                $volume += $order->getVolume();
+            }
+        }, $volume);
+
+        return $volume;
     }
 }
