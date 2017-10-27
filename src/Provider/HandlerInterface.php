@@ -9,17 +9,17 @@ use Xoptov\TradingBot\Event\Trade;
 interface HandlerInterface
 {
     /**
-     * @param Tick[] $data
+     * @param Tick $event
      */
-    public function onTick(array $data);
+    public function onTick(Tick $event);
 
     /**
-     * @param Book[] $data
+     * @param Book $event
      */
-    public function onBook(array $data);
+    public function onBook(Book $event);
 
     /**
-     * @param Trade[] $data
+     * @param Trade $event
      */
-    public function onTrade(array $data);
+    public function onTrade(Trade $event);
 }

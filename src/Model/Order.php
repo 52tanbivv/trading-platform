@@ -4,6 +4,10 @@ namespace Xoptov\TradingBot\Model;
 
 class Order
 {
+    use RateTrait;
+
+    use TimeTrackingTrait;
+
     const TYPE_BID = "bid";
     const TYPE_ASK = "ask";
 
@@ -16,15 +20,6 @@ class Order
     /** @var Currency */
     private $currency;
 
-    /** @var float */
-    private $rate;
-
-    /** @var float */
-    private $volume;
-
-    /** @var float */
-    private $total;
-
     const STATUS_NEW = "new";
     const STATUS_PLACE = "placed";
     const STATUS_CANCELED = "canceled";
@@ -34,9 +29,6 @@ class Order
     private $status = self::STATUS_NEW;
 
     /** @var \DateTime */
-    private $createdAt;
-
-    /** @var \DateTime */
     private $updatedAt;
 
     /**
@@ -44,19 +36,17 @@ class Order
      * @param string $type
      * @param Active $active
      * @param Currency $currency
-     * @param float $rate
+     * @param float $price
      * @param float $volume
-     * @param float $total
      * @param \DateTime $createdAt
      */
-    public function __construct($type, Active $active, Currency $currency, $rate, $volume, $total, \DateTime $createdAt)
+    public function __construct($type, Active $active, Currency $currency, $price, $volume, \DateTime $createdAt)
     {
         $this->type = $type;
         $this->active = $active;
         $this->currency = $currency;
-        $this->rate = $rate;
+        $this->price = $price;
         $this->volume = $volume;
-        $this->total = $total;
         $this->createdAt = $createdAt;
     }
 
@@ -89,30 +79,6 @@ class Order
     }
 
     /**
-     * @return float
-     */
-    public function getRate()
-    {
-        return $this->rate;
-    }
-
-    /**
-     * @return float
-     */
-    public function getVolume()
-    {
-        return $this->volume;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTotal()
-    {
-        return $this->total;
-    }
-
-    /**
      * @param string $status
      * @return Order
      */
@@ -129,16 +95,6 @@ class Order
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        $createdAt = clone $this->createdAt;
-
-        return $createdAt;
     }
 
     /**

@@ -6,12 +6,14 @@ use Xoptov\TradingBot\Model\Order;
 use Xoptov\TradingBot\Model\CurrencyPair;
 use Xoptov\TradingBot\Response\OrdersResponse;
 use Xoptov\TradingBot\Response\BalanceResponse;
-use Xoptov\TradingBot\Response\OrderBookResponse;
+use Xoptov\TradingBot\Response\BookResponse;
 use Xoptov\TradingBot\Response\CurrenciesResponse;
+use Xoptov\TradingBot\Response\CurrencyPairsResponse;
 use Xoptov\TradingBot\Response\PlaceOrderResponse;
 use Xoptov\TradingBot\Response\CancelOrderResponse;
 use Xoptov\TradingBot\Response\TradeHistoryResponse;
 
+//TODO: need fix after creating all response classes.
 interface ProviderInterface
 {
     const CHANNEL_TICKER = 1;
@@ -58,14 +60,19 @@ interface ProviderInterface
     public function getTradeHistory();
 
     /**
-     * @return OrderBookResponse;
+     * @return BookResponse;
      */
-    public function getOrderBook();
+    public function getBook();
 
     /**
      * @return CurrenciesResponse
      */
     public function getCurrencies();
+
+    /**
+     * @return CurrencyPairsResponse
+     */
+    public function getCurrencyPairs();
 
     /**
      * @param string $symbol

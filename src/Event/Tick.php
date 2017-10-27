@@ -2,31 +2,16 @@
 
 namespace Xoptov\TradingBot\Event;
 
-class Tick
+use Xoptov\TradingBot\Model\AbstractTick;
+use Xoptov\TradingBot\Model\CurrencyPair;
+
+class Tick extends AbstractTick
 {
-    /** @var float */
-    private $last;
-
-    /** @var float */
-    private $lowAsk;
-
     /** @var float */
     private $lowAskVolume;
 
     /** @var float */
-    private $highBid;
-
-    /** @var float */
     private $highBidVolume;
-
-    /** @var float */
-    private $change;
-
-    /** @var float */
-    private $baseVolume;
-
-    /** @var float */
-    private $quoteVolume;
 
     /** @var float */
     private $low24h;
@@ -36,45 +21,20 @@ class Tick
 
     /**
      * Tick constructor.
-     * @param float $last
-     * @param float $lowAsk
+     * {@inheritdoc}
      * @param float $lowAskVolume
-     * @param float $highBid
      * @param float $highBidVolume
-     * @param float $change
-     * @param float $baseVolume
-     * @param float $quoteVolume
      * @param float $low24h
      * @param float $high24h
      */
-    public function __construct($last, $lowAsk, $lowAskVolume, $highBid, $highBidVolume, $change, $baseVolume, $quoteVolume, $low24h, $high24h)
+    public function __construct(CurrencyPair $currencyPair, $last, $lowAsk, $lowAskVolume, $highBid, $highBidVolume, $change, $baseVolume, $quoteVolume, $low24h, $high24h)
     {
-        $this->last = $last;
-        $this->lowAsk = $lowAsk;
+        parent::__construct($currencyPair, $last, $lowAsk, $highBid, $baseVolume, $quoteVolume, $change);
+
         $this->lowAskVolume = $lowAskVolume;
-        $this->highBid = $highBid;
         $this->highBidVolume = $highBidVolume;
-        $this->change = $change;
-        $this->baseVolume = $baseVolume;
-        $this->quoteVolume = $quoteVolume;
         $this->low24h = $low24h;
         $this->high24h = $high24h;
-    }
-
-    /**
-     * @return float
-     */
-    public function getLast()
-    {
-        return $this->last;
-    }
-
-    /**
-     * @return float
-     */
-    public function getLowAsk()
-    {
-        return $this->lowAsk;
     }
 
     /**
@@ -88,41 +48,9 @@ class Tick
     /**
      * @return float
      */
-    public function getHighBid()
-    {
-        return $this->highBid;
-    }
-
-    /**
-     * @return float
-     */
     public function getHighBidVolume()
     {
         return $this->highBidVolume;
-    }
-
-    /**
-     * @return float
-     */
-    public function getChange()
-    {
-        return $this->change;
-    }
-
-    /**
-     * @return float
-     */
-    public function getBaseVolume()
-    {
-        return $this->baseVolume;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQuoteVolume()
-    {
-        return $this->quoteVolume;
     }
 
     /**

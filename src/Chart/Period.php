@@ -2,79 +2,22 @@
 
 namespace Xoptov\TradingBot\Chart;
 
-class Period
+use Xoptov\TradingBot\Model\Trade;
+
+class Period extends AbstractPeriod
 {
-    /** @var \DatePeriod */
-    private $period;
-
-    /** @var float */
-    private $open;
-
-    /** @var float */
-    private $close;
-
-    /** @var float */
-    private $high;
-
-    /** @var float */
-    private $low;
+    /** @var Trade[] */
+    private $trades;
 
     /**
      * Period constructor.
-     * @param \DatePeriod $period
-     * @param float $open
-     * @param float $close
-     * @param float $high
-     * @param float $low
+     * {@inheritdoc}
+     * @param Trade[] $trades
      */
-    public function __construct(\DatePeriod $period, $open, $close, $high, $low)
+    public function __construct($open, $close, $high, $low, \DatePeriod $period, array $trades)
     {
-        $this->period = $period;
-        $this->open = $open;
-        $this->close = $close;
-        $this->high = $high;
-        $this->low = $low;
-    }
+        parent::__construct($open, $close, $high, $low, $period);
 
-    /**
-     * @return \DatePeriod
-     */
-    public function getPeriod()
-    {
-        $period = clone $this->period;
-
-        return $period;
-    }
-
-    /**
-     * @return float
-     */
-    public function getOpen()
-    {
-        return $this->open;
-    }
-
-    /**
-     * @return float
-     */
-    public function getClose()
-    {
-        return $this->close;
-    }
-
-    /**
-     * @return float
-     */
-    public function getHigh()
-    {
-        return $this->high;
-    }
-
-    /**
-     * @return float
-     */
-    public function getLow()
-    {
-        return $this->low;
+        $this->trades = $trades;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Xoptov\TradingBot\Response;
 
-class TradeHistoryResponse
+class CurrencyPairsResponse
 {
 
 }

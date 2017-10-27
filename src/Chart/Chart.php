@@ -7,6 +7,6 @@ class Chart
     /** @var \DatePeriod */
     private $period;
 
-    /** @var Period[] */
+    /** @var AbstractPeriod[] */
     private $periods = array();
 }

@@ -6,23 +6,13 @@ use Xoptov\TradingBot\Exception\UnknownTypeException;
 
 class Active
 {
+    use RateTrait;
+
     /** @var Currency */
     private $currency;
 
-    /** @var float */
-    private $rate;
-
-    /** @var float */
-    private $volume = 0;
-
-    /** @var float */
-    private $total = 0;
-
     /** @var Trade[] */
     private $trades = array();
-
-    /** @var \DateTime */
-    private $createdAt;
 
     /** @var Order[] Open orders with this active */
     private $orders = array();
@@ -49,40 +39,6 @@ class Active
     }
 
     /**
-     * @return float
-     */
-    public function getRate()
-    {
-        return $this->rate;
-    }
-
-    /**
-     * @return float
-     */
-    public function getVolume()
-    {
-        return $this->volume;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTotal()
-    {
-        return $this->total;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        $createdAt = clone $this->createdAt;
-
-        return $createdAt;
-    }
-
-    /**
      * @param Trade $trade
      */
     public function addTrade(Trade $trade)
@@ -96,7 +52,7 @@ class Active
 
             $totals = array_map(function(Trade $trade) {
                 return array(
-                    "rate" => $trade->getRate(),
+                    "rate" => $trade->getPrice(),
                     "volume" => $trade->getVolume()
                 );
             }, $this->trades);
@@ -164,5 +120,13 @@ class Active
         }, $volume);
 
         return $volume;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAvailableVolume()
+    {
+        return $this->volume - $this->getVolumeInOrders();
     }
 }

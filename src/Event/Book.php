@@ -16,19 +16,27 @@ class Book
     /** @var float */
     private $total;
 
+    const ACTION_MODIFY = "modify";
+    const ACTION_REMOVE = "remove";
+
+    /** @var string */
+    private $action;
+
     /**
      * Book constructor.
      * @param string $type
      * @param float $rate
      * @param float $volume
      * @param float $total
+     * @param string $action
      */
-    public function __construct($type, $rate, $volume, $total)
+    public function __construct($type, $rate, $volume, $total, $action)
     {
         $this->type = $type;
         $this->rate = $rate;
         $this->volume = $volume;
         $this->total = $total;
+        $this->action = $action;
     }
 
     /**
@@ -61,5 +69,13 @@ class Book
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
     }
 }

@@ -15,11 +15,11 @@ Trade
 
 Book
 ---
-| Market   | Type | Rate | Vol | Total |
-|----------|------|------|-----|-------|
-| Poloniex | +    | +    | +   | -     |
-| Bitfinex | +    | +    | +   | +     |
-| WEX      | +    | +    | +   | -     |
+| Market   | Type | Rate | Vol | Total | Action |
+|----------|------|------|-----|-------|--------|
+| Poloniex | +    | +    | +   | -     | +      |
+| Bitfinex | +    | +    | +   | +     | -      |
+| WEX      | +    | +    | +   | -     | -      |
 
 Response
 ---

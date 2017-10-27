@@ -1,0 +1,106 @@
+<?php
+
+namespace Xoptov\TradingBot\Model;
+
+abstract class AbstractTick implements TickInterface
+{
+    /** @var CurrencyPair */
+    private $currencyPair;
+
+    /** @var float */
+    private $last;
+
+    /** @var float */
+    private $lowAsk;
+
+    /** @var float */
+    private $highBid;
+
+    /** @var float */
+    private $baseVolume;
+
+    /** @var float */
+    private $quoteVolume;
+
+    /** @var float */
+    private $change;
+
+    /**
+     * Tick constructor.
+     * @param CurrencyPair $currencyPair
+     * @param float $last
+     * @param float $lowAsk
+     * @param float $highBid
+     * @param float $baseVolume
+     * @param float $quoteVolume
+     * @param float $change
+     */
+    public function __construct(CurrencyPair $currencyPair, $last, $lowAsk, $highBid, $baseVolume, $quoteVolume, $change)
+    {
+        $this->currencyPair = $currencyPair;
+        $this->last = $last;
+        $this->lowAsk = $lowAsk;
+        $this->highBid = $highBid;
+        $this->baseVolume = $baseVolume;
+        $this->quoteVolume = $quoteVolume;
+        $this->change = $change;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCurrencyPair()
+    {
+        $currencyPair = clone $this->currencyPair;
+
+        return $currencyPair;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLast()
+    {
+        return $this->last;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLowAsk()
+    {
+        return $this->lowAsk;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHighBid()
+    {
+        return $this->highBid;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseVolume()
+    {
+        return $this->baseVolume;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQuoteVolume()
+    {
+        return $this->quoteVolume;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChange()
+    {
+        return $this->change;
+    }
+}

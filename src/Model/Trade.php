@@ -2,36 +2,24 @@
 
 namespace Xoptov\TradingBot\Model;
 
-class Trade
+class Trade extends AbstractTrade
 {
-    const TYPE_BUY = "buy";
-    const TYPE_SELL = "sell";
-
     /** @var Order */
     private $order;
-
-    /** @var string */
-    private $type;
-
-    /** @var float */
-    private $rate;
-
-    /** @var float */
-    private $volume;
 
     /**
      * Trade constructor.
      * @param Order $order
      * @param string $type
-     * @param float $rate
+     * @param float $price
      * @param float $volume
+     * @param \DateTime $createdAt;
      */
-    public function __construct(Order $order, $type, $rate, $volume)
+    public function __construct(Order $order, $type, $price, $volume, \DateTime $createdAt)
     {
+        parent::__construct($type, $price, $volume, $createdAt);
+
         $this->order = $order;
-        $this->type = $type;
-        $this->rate = $rate;
-        $this->volume = $volume;
     }
 
     /**
@@ -42,29 +30,5 @@ class Trade
         $order = clone $this->order;
 
         return $order;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRate()
-    {
-        return $this->rate;
-    }
-
-    /**
-     * @return float
-     */
-    public function getVolume()
-    {
-        return $this->volume;
     }
 }
