@@ -2,7 +2,7 @@
 
 namespace Xoptov\TradingBot\Event;
 
-class Book
+class OrderBook
 {
     /** @var string */
     private $type;

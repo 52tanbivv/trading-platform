@@ -12,13 +12,7 @@ class Response
      */
     public function getData()
     {
-        $data = array();
-
-        foreach ($this->data as $item) {
-            $data[] = clone $item;
-        }
-
-        return $data;
+        return $this->data;
     }
 
     /**

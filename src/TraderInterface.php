@@ -11,12 +11,12 @@ interface TraderInterface
     /**
      * @return array
      */
-    public function getAskOrders();
+    public function getAsks();
 
     /**
      * @return array
      */
-    public function getBidOrders();
+    public function getBids();
 
     /**
      * @return Active[]

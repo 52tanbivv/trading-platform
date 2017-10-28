@@ -2,7 +2,7 @@
 
 namespace Xoptov\TradingBot\Model;
 
-abstract class AbstractTick implements TickInterface
+class Tick
 {
     /** @var CurrencyPair */
     private $currencyPair;
@@ -47,17 +47,15 @@ abstract class AbstractTick implements TickInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return CurrencyPair
      */
     public function getCurrencyPair()
     {
-        $currencyPair = clone $this->currencyPair;
-
-        return $currencyPair;
+        return $this->currencyPair;
     }
 
     /**
-     * {@inheritdoc}
+     * @return float
      */
     public function getLast()
     {
@@ -65,7 +63,7 @@ abstract class AbstractTick implements TickInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return float
      */
     public function getLowAsk()
     {
@@ -73,7 +71,7 @@ abstract class AbstractTick implements TickInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return float
      */
     public function getHighBid()
     {
@@ -81,7 +79,7 @@ abstract class AbstractTick implements TickInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return float
      */
     public function getBaseVolume()
     {
@@ -89,7 +87,7 @@ abstract class AbstractTick implements TickInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return float
      */
     public function getQuoteVolume()
     {
@@ -97,7 +95,7 @@ abstract class AbstractTick implements TickInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return float
      */
     public function getChange()
     {

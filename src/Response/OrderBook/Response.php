@@ -5,10 +5,10 @@ namespace Xoptov\TradingBot\Response\OrderBook;
 class Response
 {
     /** @var Rate[] */
-    private $asks;
+    private $asks = array();
 
     /** @var Rate[] */
-    private $bids;
+    private $bids = array();
 
     /**
      * @param float $price
@@ -27,13 +27,7 @@ class Response
      */
     public function getAsks()
     {
-        $asks = array();
-
-        foreach ($this->asks as $ask) {
-            $asks[] = clone $ask;
-        }
-
-        return $asks;
+        return $this->asks;
     }
 
     /**
@@ -53,12 +47,6 @@ class Response
      */
     public function getBids()
     {
-        $bids = array();
-
-        foreach ($this->bids as $bid) {
-            $bids[] = clone $bid;
-        }
-
-        return $bids;
+        return $this->bids;
     }
 }

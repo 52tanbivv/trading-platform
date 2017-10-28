@@ -2,33 +2,35 @@
 
 namespace Xoptov\TradingBot\Model;
 
-class Trade extends AbstractTrade
+class Trade implements TradeInterface
 {
-    /** @var Order */
-    private $order;
+    use RateTrait;
+
+    use TimeTrackingTrait;
+
+    /** @var string */
+    private $type;
 
     /**
-     * Trade constructor.
-     * @param Order $order
+     * AbstractTrade constructor.
      * @param string $type
-     * @param float $price
-     * @param float $volume
-     * @param \DateTime $createdAt;
+     * @param string $price
+     * @param string $volume
+     * @param \DateTime $createdAt
      */
-    public function __construct(Order $order, $type, $price, $volume, \DateTime $createdAt)
+    public function __construct($type, $price, $volume, \DateTime $createdAt)
     {
-        parent::__construct($type, $price, $volume, $createdAt);
-
-        $this->order = $order;
+        $this->type = $type;
+        $this->price = $price;
+        $this->volume = $volume;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * @return Order
+     * {@inheritdoc}
      */
-    public function getOrder()
+    public function getType()
     {
-        $order = clone $this->order;
-
-        return $order;
+        return $this->type;
     }
 }

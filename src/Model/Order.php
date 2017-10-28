@@ -73,9 +73,7 @@ class Order
      */
     public function getCurrency()
     {
-        $currency = clone $this->currency;
-
-        return $currency;
+        return $this->currency;
     }
 
     /**

@@ -2,10 +2,12 @@
 
 namespace Xoptov\TradingBot\Response\TradeHistory;
 
+use Xoptov\TradingBot\Model\Trade;
+
 class Response
 {
     /** @var Trade[] */
-    private $trades;
+    private $trades = array();
 
     /**
      * @return Trade[]

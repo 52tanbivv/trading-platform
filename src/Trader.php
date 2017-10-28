@@ -2,10 +2,13 @@
 
 namespace Xoptov\TradingBot;
 
-use Xoptov\TradingBot\Provider\ProviderInterface;
-use Xoptov\TradingBot\Provider\HandlerInterface;
 use Xoptov\TradingBot\Chart\Chart;
 use Xoptov\TradingBot\Model\Order;
+use Xoptov\TradingBot\Event\Tick as TickEvent;
+use Xoptov\TradingBot\Event\Trade as TradeEvent;
+use Xoptov\TradingBot\Provider\HandlerInterface;
+use Xoptov\TradingBot\Provider\ProviderInterface;
+use Xoptov\TradingBot\Event\OrderBook as OrderBookEvent;
 
 class Trader implements TraderInterface, HandlerInterface
 {
@@ -36,7 +39,7 @@ class Trader implements TraderInterface, HandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function getAskOrders()
+    public function getAsks()
     {
         return $this->orderBook->getAsks();
     }
@@ -44,7 +47,7 @@ class Trader implements TraderInterface, HandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function getBidOrders()
+    public function getBids()
     {
         return $this->orderBook->getBids();
     }
@@ -84,7 +87,7 @@ class Trader implements TraderInterface, HandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function onTick(array $data)
+    public function handleTick(TickEvent $event)
     {
 
     }
@@ -92,7 +95,7 @@ class Trader implements TraderInterface, HandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function onBook(array $data)
+    public function handleOrderBook(OrderBookEvent $event)
     {
 
     }
@@ -100,7 +103,7 @@ class Trader implements TraderInterface, HandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function onTrade(array $data)
+    public function handleTrade(TradeEvent $event)
     {
 
     }

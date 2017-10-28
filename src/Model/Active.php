@@ -4,12 +4,10 @@ namespace Xoptov\TradingBot\Model;
 
 use Xoptov\TradingBot\Exception\UnknownTypeException;
 
-class Active
+class Active extends AbstractActive
 {
-    use RateTrait;
-
-    /** @var Currency */
-    private $currency;
+	/** @var float */
+    private $price;
 
     /** @var Trade[] */
     private $trades = array();
@@ -17,25 +15,12 @@ class Active
     /** @var Order[] Open orders with this active */
     private $orders = array();
 
-    /**
-     * Active constructor.
-     * @param Currency $currency
-     * @param int $volume
-     */
-    public function __construct(Currency $currency, $volume = 0)
+	/**
+	 * @return float
+	 */
+    public function getPrice()
     {
-        $this->currency = $currency;
-        $this->volume = $volume;
-    }
-
-    /**
-     * @return Currency
-     */
-    public function getCurrency()
-    {
-        $currency = clone $this->currency;
-
-        return $currency;
+    	return $this->price;
     }
 
     /**
@@ -60,7 +45,7 @@ class Active
             $rates = array_sum(array_column($totals, "rate"));
             $volumes = array_sum(array_column($totals, "volume"));
 
-            $this->rate = $rates / $volumes;
+            $this->price = $rates / $volumes;
         } else {
             throw new UnknownTypeException("Trade type must be set.");
         }

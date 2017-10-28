@@ -3,11 +3,12 @@
 namespace Xoptov\TradingBot\Response\Ticker;
 
 use Xoptov\TradingBot\Model\CurrencyPair;
+use Xoptov\TradingBot\Model\Tick;
 
 class Response
 {
     /** @var Tick[] */
-    private $ticks;
+    private $ticks = array();
 
     /**
      * @return Tick[]

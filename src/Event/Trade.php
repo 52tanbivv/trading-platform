@@ -2,9 +2,9 @@
 
 namespace Xoptov\TradingBot\Event;
 
-use Xoptov\TradingBot\Model\AbstractTrade;
+use Xoptov\TradingBot\Model\Trade as OriginTrade;
 
-class Trade extends AbstractTrade
+class Trade extends OriginTrade
 {
     /** @var string */
     private $id;

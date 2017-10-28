@@ -2,10 +2,10 @@
 
 namespace Xoptov\TradingBot\Event;
 
-use Xoptov\TradingBot\Model\AbstractTick;
+use Xoptov\TradingBot\Model\Tick;
 use Xoptov\TradingBot\Model\CurrencyPair;
 
-class Tick extends AbstractTick
+class Tick extends Tick
 {
     /** @var float */
     private $lowAskVolume;
