@@ -1,8 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\OrderBook;
-
-use Xoptov\TradingBot\Model\RateTrait;
+namespace Xoptov\TradingPlatform\Model;
 
 class Rate
 {

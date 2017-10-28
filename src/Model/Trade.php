@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Model;
+namespace Xoptov\TradingPlatform\Model;
 
 class Trade implements TradeInterface
 {
@@ -8,22 +8,35 @@ class Trade implements TradeInterface
 
     use TimeTrackingTrait;
 
+    /** @var mixed */
+    private $id;
+
     /** @var string */
     private $type;
 
     /**
      * AbstractTrade constructor.
+     * @param mixed $id
      * @param string $type
      * @param string $price
      * @param string $volume
      * @param \DateTime $createdAt
      */
-    public function __construct($type, $price, $volume, \DateTime $createdAt)
+    public function __construct($id, $type, $price, $volume, \DateTime $createdAt)
     {
+    	$this->id = $id;
         $this->type = $type;
         $this->price = $price;
         $this->volume = $volume;
         $this->createdAt = $createdAt;
+    }
+
+	/**
+	 * @return mixed
+	 */
+    public function getId()
+    {
+		return $this->id;
     }
 
     /**

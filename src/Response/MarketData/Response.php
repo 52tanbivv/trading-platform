@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\ChartData;
+namespace Xoptov\TradingPlatform\Response\MarketData;
 
 class Response
 {
@@ -12,7 +12,13 @@ class Response
      */
     public function getData()
     {
-        return $this->data;
+    	$items = array();
+
+    	foreach ($this->data as $item) {
+    		$items[] = clone $item;
+	    }
+
+        return $items;
     }
 
     /**

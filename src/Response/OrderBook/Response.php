@@ -1,6 +1,8 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\OrderBook;
+namespace Xoptov\TradingPlatform\Response\OrderBook;
+
+use Xoptov\TradingPlatform\Model\Rate;
 
 class Response
 {
@@ -27,7 +29,13 @@ class Response
      */
     public function getAsks()
     {
-        return $this->asks;
+    	$asks = array();
+
+    	foreach ($this->asks as $ask) {
+    		$asks[] = clone $ask;
+	    }
+
+        return $asks;
     }
 
     /**
@@ -47,6 +55,12 @@ class Response
      */
     public function getBids()
     {
-        return $this->bids;
+    	$bids = array();
+
+    	foreach ($this->bids as $bid) {
+    		$bids[] = clone $bid;
+	    }
+
+        return $bids;
     }
 }

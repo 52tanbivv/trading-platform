@@ -1,8 +1,8 @@
 <?php
 
-namespace Xoptov\TradingBot;
+namespace Xoptov\TradingPlatform;
 
-use Xoptov\TradingBot\Model\Active;
+use Xoptov\TradingPlatform\Model\Active;
 
 class Balance
 {

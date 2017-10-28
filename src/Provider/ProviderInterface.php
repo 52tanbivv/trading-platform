@@ -1,82 +1,84 @@
 <?php
 
-namespace Xoptov\TradingBot\Provider;
+namespace Xoptov\TradingPlatform\Provider;
 
-use Xoptov\TradingBot\Model\Order;
-use Xoptov\TradingBot\Model\CurrencyPair;
-use Xoptov\TradingBot\Response\OrdersResponse;
-use Xoptov\TradingBot\Response\BalanceResponse;
-use Xoptov\TradingBot\Response\BookResponse;
-use Xoptov\TradingBot\Response\CurrenciesResponse;
-use Xoptov\TradingBot\Response\CurrencyPairsResponse;
-use Xoptov\TradingBot\Response\PlaceOrderResponse;
-use Xoptov\TradingBot\Response\CancelOrderResponse;
-use Xoptov\TradingBot\Response\TradeHistoryResponse;
+use Xoptov\TradingPlatform\PlatformInterface;
+use Xoptov\TradingPlatform\Response\Balance\Response as BalanceResponse;
+use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
+use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsResponse;
+use Xoptov\TradingPlatform\Response\MarketData\Response as MarketDataResponse;
+use Xoptov\TradingPlatform\Response\OpenOrders\Response as OpenOrdersResponse;
+use Xoptov\TradingPlatform\Response\OrderBook\Response as OrderBookResponse;
+use Xoptov\TradingPlatform\Response\PlaceOrder\Response as PlaceOrderResponse;
+use Xoptov\TradingPlatform\Response\Ticker\Response as TickerResponse;
+use Xoptov\TradingPlatform\Response\TradeHistory\Response as TradeHistoryResponse;
 
-//TODO: need fix after creating all response classes.
 interface ProviderInterface
 {
-    const CHANNEL_TICKER = 1;
-    const CHANNEL_BOOK = 2;
-    const CHANNEL_TRADE = 4;
-
     /**
-     * @param HandlerInterface $handler
-     * @param int $channel
-     * @return mixed
+     * @param PlatformInterface $platform
+     * @return void
      */
-    public function bind(HandlerInterface $handler, $channel = self::CHANNEL_TICKER);
+    public function bind(PlatformInterface $platform);
 
     /**
      * @return void
+     * @todo: This method need refactoring for event loop setting.
      */
     public function start();
 
-    /**
-     * @param Order $order
-     * @return PlaceOrderResponse
-     */
-    public function placeOrder(Order $order);
+	/**
+	 * @return string
+	 */
+    public function getName();
 
-    /**
-     * @param Order $order
-     * @return CancelOrderResponse
-     */
-    public function cancelOrder(Order $order);
-
-    /**
-     * @return BalanceResponse
-     */
+	/**
+	 * @return BalanceResponse
+	 */
     public function getBalance();
 
-    /**
-     * @return OrdersResponse
-     */
-    public function getOrders();
-
-    /**
-     * @return TradeHistoryResponse
-     */
-    public function getTradeHistory();
-
-    /**
-     * @return BookResponse;
-     */
-    public function getBook();
-
-    /**
-     * @return CurrenciesResponse
-     */
+	/**
+	 * @return CurrenciesResponse
+	 */
     public function getCurrencies();
 
-    /**
-     * @return CurrencyPairsResponse
-     */
+	/**
+	 * @return CurrencyPairsResponse
+	 */
     public function getCurrencyPairs();
 
-    /**
-     * @param string $symbol
-     * @return CurrencyPair
-     */
-    public function createCurrencyPair($symbol);
+	/**
+	 * @return MarketDataResponse
+	 */
+    public function getMarketData();
+
+	/**
+	 * @return OpenOrdersResponse
+	 */
+    public function getOpenOrders();
+
+	/**
+	 * @return OrderBookResponse
+	 */
+    public function getOrderBook();
+
+	/**
+	 * @return PlaceOrderResponse
+	 */
+    public function placeOrder();
+
+	/**
+	 * @return boolean
+	 */
+    public function cancelOrder();
+
+	/**
+	 * @return TickerResponse
+	 */
+    public function getTicker();
+
+	/**
+	 * @return TradeHistoryResponse
+	 */
+    public function getTradeHistory();
 }

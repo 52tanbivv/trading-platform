@@ -1,8 +1,8 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\TradeHistory;
+namespace Xoptov\TradingPlatform\Response\TradeHistory;
 
-use Xoptov\TradingBot\Model\Trade;
+use Xoptov\TradingPlatform\Model\Trade;
 
 class Response
 {
@@ -24,15 +24,16 @@ class Response
     }
 
     /**
+     * @param mixed $id
      * @param string $type
      * @param float $price
      * @param float $volume
      * @param \DateTime $createdAt
      * @return int
      */
-    public function addTrade($type, $price, $volume, \DateTime $createdAt)
+    public function addTrade($id, $type, $price, $volume, \DateTime $createdAt)
     {
-        $trade = new Trade($type, $price, $volume, $createdAt);
+        $trade = new Trade($id, $type, $price, $volume, $createdAt);
 
         return array_push($this->trades, $trade);
     }

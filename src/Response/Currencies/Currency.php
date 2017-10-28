@@ -1,8 +1,8 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\Currencies;
+namespace Xoptov\TradingPlatform\Response\Currencies;
 
-use Xoptov\TradingBot\Model\Currency as OriginCurrency;
+use Xoptov\TradingPlatform\Model\Currency as OriginCurrency;
 
 class Currency extends OriginCurrency
 {

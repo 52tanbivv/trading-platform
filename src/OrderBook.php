@@ -1,17 +1,19 @@
 <?php
 
-namespace Xoptov\TradingBot;
+namespace Xoptov\TradingPlatform;
+
+use Xoptov\TradingPlatform\Model\Rate;
 
 class OrderBook
 {
-    /** @var array */
+    /** @var Rate[] */
     private $asks = array();
 
-    /** @var array */
+    /** @var Rate[] */
     private $bids = array();
 
     /**
-     * @return array
+     * @return Rate[]
      */
     public function getAsks()
     {
@@ -25,7 +27,7 @@ class OrderBook
     }
 
     /**
-     * @return array
+     * @return Rate[]
      */
     public function getBids()
     {

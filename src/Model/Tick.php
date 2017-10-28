@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Model;
+namespace Xoptov\TradingPlatform\Model;
 
 class Tick
 {

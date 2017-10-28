@@ -1,8 +1,8 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\ChartData;
+namespace Xoptov\TradingPlatform\Response\MarketData;
 
-use Xoptov\TradingBot\Chart\AbstractPeriod;
+use Xoptov\TradingPlatform\Chart\AbstractPeriod;
 
 class Data extends AbstractPeriod
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\Currencies;
+namespace Xoptov\TradingPlatform\Response\Currencies;
 
 class Response
 {
@@ -8,11 +8,17 @@ class Response
 	private $currencies = array();
 
 	/**
-	 * @return mixed
+	 * @return Currency[]
 	 */
 	public function getCurrencies()
 	{
-		return $this->currencies;
+		$currencies = array();
+
+		foreach ($this->currencies as $currency) {
+			$currencies[] = clone $currency;
+		}
+
+		return $currencies;
 	}
 
 	public function addCurrency($symbol, $name, $enabled)

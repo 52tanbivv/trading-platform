@@ -1,9 +1,9 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\Ticker;
+namespace Xoptov\TradingPlatform\Response\Ticker;
 
-use Xoptov\TradingBot\Model\CurrencyPair;
-use Xoptov\TradingBot\Model\Tick;
+use Xoptov\TradingPlatform\Model\CurrencyPair;
+use Xoptov\TradingPlatform\Model\Tick;
 
 class Response
 {

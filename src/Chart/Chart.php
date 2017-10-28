@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Chart;
+namespace Xoptov\TradingPlatform\Chart;
 
 class Chart
 {

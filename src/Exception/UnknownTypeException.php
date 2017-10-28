@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Exception;
+namespace Xoptov\TradingPlatform\Exception;
 
 class UnknownTypeException extends \RuntimeException
 {

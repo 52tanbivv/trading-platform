@@ -1,12 +1,15 @@
 <?php
 
-namespace Xoptov\TradingBot\Model;
+namespace Xoptov\TradingPlatform\Model;
 
 class Order
 {
     use RateTrait;
 
     use TimeTrackingTrait;
+
+    /** @var mixed */
+    private $id;
 
     const TYPE_BID = "bid";
     const TYPE_ASK = "ask";
@@ -33,6 +36,7 @@ class Order
 
     /**
      * Order constructor.
+     * @param mixed $id
      * @param string $type
      * @param Active $active
      * @param Currency $currency
@@ -40,8 +44,9 @@ class Order
      * @param float $volume
      * @param \DateTime $createdAt
      */
-    public function __construct($type, Active $active, Currency $currency, $price, $volume, \DateTime $createdAt)
+    public function __construct($id, $type, Active $active, Currency $currency, $price, $volume, \DateTime $createdAt)
     {
+    	$this->id = $id;
         $this->type = $type;
         $this->active = $active;
         $this->currency = $currency;
@@ -49,6 +54,14 @@ class Order
         $this->volume = $volume;
         $this->createdAt = $createdAt;
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
     /**
      * @return string

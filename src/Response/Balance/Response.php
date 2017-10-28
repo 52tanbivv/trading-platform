@@ -1,20 +1,27 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\Balance;
+namespace Xoptov\TradingPlatform\Response\Balance;
 
-use Xoptov\TradingBot\Model\Currency;
+use Xoptov\TradingPlatform\Model\Currency;
+use Xoptov\TradingPlatform\Model\Active;
 
 class Response
 {
 	/** @var Active[] */
-	private $actives = array();
+	private $actives;
 
 	/**
 	 * @return Active[]
 	 */
 	public function getActives()
 	{
-		return $this->actives;
+		$actives = array();
+
+		foreach ($this->actives as $active) {
+			$actives[] = clone $active;
+		}
+
+		return $actives;
 	}
 
 	/**

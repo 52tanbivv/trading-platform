@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Event;
+namespace Xoptov\TradingPlatform\Event;
 
 class OrderBook
 {

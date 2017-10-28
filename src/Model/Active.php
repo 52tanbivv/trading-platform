@@ -1,13 +1,19 @@
 <?php
 
-namespace Xoptov\TradingBot\Model;
+namespace Xoptov\TradingPlatform\Model;
 
-use Xoptov\TradingBot\Exception\UnknownTypeException;
+use Xoptov\TradingPlatform\Exception\UnknownTypeException;
 
-class Active extends AbstractActive
+class Active
 {
+	/** @var Currency */
+	private $currency;
+
 	/** @var float */
     private $price;
+
+    /** @var float */
+    private $volume;
 
     /** @var Trade[] */
     private $trades = array();
@@ -16,12 +22,39 @@ class Active extends AbstractActive
     private $orders = array();
 
 	/**
+	 * AbstractActive constructor.
+	 * @param Currency $currency
+	 * @param float $volume
+	 */
+	public function __construct(Currency $currency, $volume)
+	{
+		$this->currency = $currency;
+		$this->volume = $volume;
+	}
+
+	/**
+	 * @return Currency
+	 */
+	public function getCurrency()
+	{
+		return $this->currency;
+	}
+
+	/**
 	 * @return float
 	 */
-    public function getPrice()
-    {
-    	return $this->price;
-    }
+	public function getPrice()
+	{
+		return $this->price;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getVolume()
+	{
+		return $this->volume;
+	}
 
     /**
      * @param Trade $trade
@@ -82,11 +115,11 @@ class Active extends AbstractActive
      */
     public function getOrders()
     {
-        $orders = array();
+    	$orders = array();
 
-        foreach ($this->orders as $order) {
-            $orders[] = clone $order;
-        }
+    	foreach ($this->orders as $order) {
+    		$orders[] = clone $order;
+	    }
 
         return $orders;
     }

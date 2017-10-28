@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\OpenOrders;
+namespace Xoptov\TradingPlatform\Response\OpenOrders;
 
 class Response
 {
@@ -12,7 +12,13 @@ class Response
 	 */
 	public function getOrders()
 	{
-		return $this->orders;
+		$orders = array();
+
+		foreach ($this->orders as $order) {
+			$orders[] = clone $order;
+		}
+
+		return $orders;
 	}
 
 	/**

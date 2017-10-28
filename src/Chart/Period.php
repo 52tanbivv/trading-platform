@@ -1,8 +1,8 @@
 <?php
 
-namespace Xoptov\TradingBot\Chart;
+namespace Xoptov\TradingPlatform\Chart;
 
-use Xoptov\TradingBot\Model\Trade;
+use Xoptov\TradingPlatform\Model\Trade;
 
 class Period extends AbstractPeriod
 {

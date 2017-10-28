@@ -1,9 +1,9 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\CurrencyPairs;
+namespace Xoptov\TradingPlatform\Response\CurrencyPairs;
 
-use Xoptov\TradingBot\Model\Currency;
-use Xoptov\TradingBot\Model\CurrencyPair;
+use Xoptov\TradingPlatform\Model\Currency;
+use Xoptov\TradingPlatform\Model\CurrencyPair;
 
 class Response
 {
@@ -15,7 +15,13 @@ class Response
 	 */
 	public function getCurrencyPairs()
 	{
-		return $this->currencyPairs;
+		$currencyPairs = array();
+
+		foreach ($this->currencyPairs as $currencyPair) {
+			$currencyPairs[] = clone $currencyPair;
+		}
+
+		return $currencyPairs;
 	}
 
 	/**

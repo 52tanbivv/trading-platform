@@ -1,8 +1,8 @@
 <?php
 
-namespace Xoptov\TradingBot\Response\OpenOrders;
+namespace Xoptov\TradingPlatform\Response\OpenOrders;
 
-use Xoptov\TradingBot\Model\RateTrait;
+use Xoptov\TradingPlatform\Model\RateTrait;
 
 class Order
 {

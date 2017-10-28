@@ -1,11 +1,11 @@
 <?php
 
-namespace Xoptov\TradingBot\Event;
+namespace Xoptov\TradingPlatform\Event;
 
-use Xoptov\TradingBot\Model\Tick;
-use Xoptov\TradingBot\Model\CurrencyPair;
+use Xoptov\TradingPlatform\Model\CurrencyPair;
+use Xoptov\TradingPlatform\Model\Tick as OriginTick;
 
-class Tick extends Tick
+class Tick extends OriginTick
 {
     /** @var float */
     private $lowAskVolume;

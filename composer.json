@@ -1,6 +1,6 @@
 {
-    "name": "xoptov/trading-bot",
-    "description": "This is a bot for automation trading.",
+    "name": "xoptov/trading-platform",
+    "description": "This is a platform for automation trading.",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Xoptov\\TradingBot\\": "src/"
+            "Xoptov\\TradingPlatform\\": "src/"
         }
     },
     "minimum-stability": "stable",
