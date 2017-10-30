@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingPlatform\Event;
+namespace Xoptov\TradingPlatform\Message;
 
 class OrderBook
 {

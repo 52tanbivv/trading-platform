@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingPlatform\Event;
+namespace Xoptov\TradingPlatform\Message;
 
 use Xoptov\TradingPlatform\Model\CurrencyPair;
 use Xoptov\TradingPlatform\Model\Tick as OriginTick;

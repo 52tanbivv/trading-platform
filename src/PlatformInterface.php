@@ -2,34 +2,18 @@
 
 namespace Xoptov\TradingPlatform;
 
-use Xoptov\TradingPlatform\Model\Order;
-use Xoptov\TradingPlatform\Model\Trade;
-use Xoptov\TradingPlatform\Model\Active;
 use Xoptov\TradingPlatform\Trader\TraderInterface;
 
-interface PlatformInterface
+interface PlatformInterface extends ConnectorInterface
 {
     /**
-     * @param TraderInterface $consumer
-     * @return OrderBook
+     * @return boolean
      */
-    public function getOrderBook(TraderInterface $consumer);
+    public function start();
 
     /**
-     * @param TraderInterface $consumer
-     * @return Active[]
+     * @param TraderInterface $trader
+     * @return boolean
      */
-    public function getActives(TraderInterface $consumer);
-
-    /**
-     * @param TraderInterface $consumer
-     * @return Order[]
-     */
-    public function getOrders(TraderInterface $consumer);
-
-	/**
-	 * @param TraderInterface $consumer
-	 * @return Trade[]
-	 */
-    public function getTrades(TraderInterface $consumer);
+    public function attach(TraderInterface $trader);
 }

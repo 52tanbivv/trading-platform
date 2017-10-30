@@ -2,17 +2,15 @@
 
 namespace Xoptov\TradingPlatform\Provider;
 
+use Xoptov\TradingPlatform\OrderBook;
 use Xoptov\TradingPlatform\Model\Currency;
 use Xoptov\TradingPlatform\Model\CurrencyPair;
-use Xoptov\TradingPlatform\OrderBook;
+use Xoptov\TradingPlatform\ConnectorInterface;
 
-abstract class AbstractProvider implements ProviderInterface
+abstract class AbstractProvider implements ProviderInterface, ConnectorInterface
 {
-	/** @var string */
-	private $name;
-
-	/** @var OrderBook */
-	private $orderBook;
+    /** @var OrderBook */
+    private $orderBook;
 
 	/** @var Currency[] */
 	private $currencies = array();
@@ -20,17 +18,11 @@ abstract class AbstractProvider implements ProviderInterface
 	/** @var CurrencyPair[] */
 	private $currencyPairs = array();
 
-	public function __construct($name)
-	{
-		$this->name = $name;
-		$this->orderBook = new OrderBook();
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * AbstractProvider constructor.
+     */
+	public function __construct()
+    {
+        $this->orderBook = new OrderBook();
+    }
 }

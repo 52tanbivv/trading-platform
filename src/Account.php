@@ -4,14 +4,18 @@ namespace Xoptov\TradingPlatform;
 
 class Account
 {
-	/** @var Balance */
+    /** @var string */
+    private $apiKey;
+
+    /** @var Balance */
 	private $balance;
 
 	/**
 	 * Account constructor.
 	 */
-	public function __construct()
+	public function __construct($apiKey)
 	{
+	    $this->apiKey = $apiKey;
 		$this->balance = new Balance();
 	}
 

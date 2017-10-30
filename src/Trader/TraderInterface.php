@@ -2,17 +2,16 @@
 
 namespace Xoptov\TradingPlatform\Trader;
 
-use Xoptov\TradingPlatform\Account;
-use Xoptov\TradingPlatform\Event\Tick;
-use Xoptov\TradingPlatform\Event\Trade;
-use Xoptov\TradingPlatform\Event\OrderBook;
+use Xoptov\TradingPlatform\Message\Tick;
+use Xoptov\TradingPlatform\Message\Trade;
+use Xoptov\TradingPlatform\Message\OrderBook;
 
 interface TraderInterface
 {
-	/**
-	 * @return Account
-	 */
-	public function getAccount();
+    /**
+     * @return int
+     */
+    public function supportChannels();
 
 	/**
 	 * @param Tick $event
