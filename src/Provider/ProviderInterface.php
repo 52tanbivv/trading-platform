@@ -2,6 +2,18 @@
 
 namespace Xoptov\TradingPlatform\Provider;
 
+use Xoptov\TradingPlatform\Account;
+use Xoptov\TradingPlatform\Model\Order;
+use Xoptov\TradingPlatform\Response\Ticker\Response as TickerResponse;
+use Xoptov\TradingPlatform\Response\Balance\Response as BalanceResponse;
+use Xoptov\TradingPlatform\Response\OrderBook\Response as OrderBookResponse;
+use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
+use Xoptov\TradingPlatform\Response\MarketData\Response as MarketDataResponse;
+use Xoptov\TradingPlatform\Response\OpenOrders\Response as OpenOrdersResponse;
+use Xoptov\TradingPlatform\Response\TradeHistory\Response as TradeHistoryResponse;
+use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsResponse;
+use Xoptov\TradingPlatform\Response\PlaceOrder\Response as PlaceOrderResponse;
+
 interface ProviderInterface
 {
     const CHANNEL_TICKER = 1;
@@ -14,20 +26,66 @@ interface ProviderInterface
     public function start();
 
     /**
+     * @param string $channel
      * @param callable $handler
      * @return boolean
      */
-    public function bindTick(callable $handler);
+    public function bindChannel($channel, callable $handler);
 
     /**
-     * @param callable $handler
-     * @return boolean
+     * @return CurrenciesResponse
      */
-    public function bindOrderBook(callable $handler);
+    public function currencies();
 
     /**
-     * @param callable $handler
+     * @return CurrencyPairsResponse
+     */
+    public function currencyPairs();
+
+    /**
+     * @return MarketDataResponse
+     */
+    public function marketData();
+
+    /**
+     * @return TickerResponse
+     */
+    public function ticker();
+
+    /**
+     * @return TradeHistoryResponse
+     */
+    public function tradeHistory();
+
+    /**
+     * @param Account $account
+     * @return BalanceResponse
+     */
+    public function balance(Account $account);
+
+    /**
+     * @param Account $account
+     * @return OpenOrdersResponse
+     */
+    public function openOrders(Account $account);
+
+    /**
+     * @param Account $account
+     * @return OrderBookResponse
+     */
+    public function orderBook(Account $account);
+
+    /**
+     * @param Account $account
+     * @param Order $order
+     * @return PlaceOrderResponse
+     */
+    public function placeOrder(Account $account, Order $order);
+
+    /**
+     * @param Account $account
+     * @param Order $order
      * @return boolean
      */
-    public function bindTrade(callable $handler);
+    public function cancelOrder(Account $account, Order $order);
 }

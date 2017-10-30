@@ -51,17 +51,17 @@ class Platform implements PlatformInterface
 
             // Bind tick message if trader support it.
             if ($trader->supportChannels() & ProviderInterface::CHANNEL_TICKER) {
-                $this->provider->bindTick(array($trader, "onTick"));
+                $this->provider->bindChannel("tick", array($trader, "onTick"));
             }
 
             // Bind order book message if trader support it.
             if ($trader->supportChannels() & ProviderInterface::CHANNEL_ORDER_BOOK) {
-                $this->provider->bindOrderBook(array($trader, "onOrderBook"));
+                $this->provider->bindChannel("orderBook", array($trader, "onOrderBook"));
             }
 
             // Bind trade message if trader support it.
             if ($trader->supportChannels() & ProviderInterface::CHANNEL_TRADE) {
-                $this->provider->bindTrade(array($trader, "opnTrade"));
+                $this->provider->bindChannel("trade", array($trader, "opnTrade"));
             }
         }
 
