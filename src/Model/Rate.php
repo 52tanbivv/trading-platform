@@ -16,4 +16,15 @@ class Rate
         $this->price = $price;
         $this->volume = $volume;
     }
+
+	/**
+	 * @param $volume
+	 * @return $this
+	 */
+	public function setVolume($volume)
+	{
+		$this->volume = $volume;
+
+		return $this;
+	}
 }

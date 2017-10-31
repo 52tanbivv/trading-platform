@@ -2,121 +2,158 @@
 
 namespace Xoptov\TradingPlatform;
 
-use Xoptov\TradingPlatform\Exception\UnknownTypeException;
+use Ds\Map;
 use Xoptov\TradingPlatform\Model\Rate;
 use Xoptov\TradingPlatform\Model\Order;
+use Xoptov\TradingPlatform\Exception\UnknownTypeException;
+use Xoptov\TradingPlatform\Exception\InvalidOrderBookException;
 
 class OrderBook
 {
-    /** @var Rate[] */
-    private $asks = array();
+    /** @var Map */
+    private $asks;
 
-    /** @var Rate[] */
+    /** @var Map */
     private $bids = array();
 
-    /**
-     * @return Rate[]
+	/**
+	 * OrderBook constructor.
+	 */
+    public function __construct()
+    {
+    	$this->asks = new Map();
+    	$this->bids = new Map();
+    }
+
+	/**
+     * @return Map
      */
     public function getAsks()
     {
-        $asks = array();
-
-        foreach ($this->asks as $ask) {
-            $asks[] = clone $ask;
-        }
+        $asks = clone $this->asks;
 
         return $asks;
     }
 
     /**
-     * @return Rate[]
+     * @return Map
      */
     public function getBids()
     {
-        $bids = array();
-
-        foreach ($this->bids as $bid) {
-            $bids[] = clone $bid;
-        }
+        $bids = clone $this->bids;
 
         return $bids;
     }
 
-    /**
-     * @param string $type
-     * @param float $price
-     * @param float $volume
-     */
-    public function add($type, $price, $volume)
+	/**
+	 * @return Rate|null
+	 */
+    public function getHighestBid()
     {
-        $current = null;
+		$pair = clone $this->bids->first();
 
-        if ($type === Order::TYPE_ASK) {
-            $current = $this->asks;
-        } elseif ($type === Order::TYPE_BID) {
-            $current = $this->bids;
-        } else {
-            throw new UnknownTypeException();
-        }
+		if ($pair) {
+			$bid = clone $pair["value"];
 
-        $rate = new Rate($price, $volume);
-        $current[] = $rate;
+			return $bid;
+		}
 
-        $this->resort($type, $current);
+		return null;
+    }
+
+	/**
+	 * @return Rate|null
+	 */
+    public function getLowestAsk()
+    {
+		$pair = clone $this->asks->first();
+
+		if ($pair) {
+			$ask = clone $pair["value"];
+
+			return $ask;
+		}
+
+		return null;
     }
 
     /**
      * @param string $type
-     * @param float $price
-     * @param float $volume
+     * @param Rate $rate
+     * @return boolean
      */
-    public function modify($type, $price, $volume)
+    public function add($type, Rate $rate)
     {
-        $current = null;
+        $side = $this->determineSide($type);
 
-        if ($type === Order::TYPE_ASK) {
-            $current = $this->asks;
-        } elseif ($type === Order::TYPE_BID) {
-            $current = $this->bids;
-        } else {
-            throw new UnknownTypeException();
+        if ($side->hasKey($rate->getPrice())) {
+        	throw new InvalidOrderBookException();
         }
 
-        /** @var Rate $row */
-        foreach ($current as $key => $row) {
-            if ($row->getPrice() === $price) {
-                unset($current[$key]);
-                $this->add($type, $price, $volume);
+        $side->put($rate->getPrice(), $rate);
+        $this->resort($type, $side);
 
-                break;
-            }
-        }
+        return true;
     }
 
     /**
      * @param string $type
-     * @param array $current
-     * @return bool
+     * @param Rate $rate
+     * @return boolean
      */
-    public function resort($type, &$current)
+    public function modify($type, Rate $rate)
+    {
+        $side = $this->determineSide($type);
+
+		if (!$side->hasKey($rate->getPrice())) {
+        	throw new InvalidOrderBookException();
+		}
+
+		/** @var Rate $item */
+		$item = $side->get($rate->getPrice());
+        $item->setVolume($rate->getVolume());
+
+        return true;
+    }
+
+	/**
+	 * @param $type
+	 * @return Map
+	 */
+    private function determineSide($type)
+    {
+    	if (Order::TYPE_ASK === $type) {
+    		return $this->asks;
+	    } elseif (Order::TYPE_BID === $type) {
+    		return $this->bids;
+        }
+
+        throw new UnknownTypeException();
+    }
+
+    /**
+     * @param string $type
+     * @param Map $current
+     */
+    private function resort($type, Map $current)
     {
         $comparator = null;
 
         if ($type === Order::TYPE_ASK) {
-            $comparator = function (Rate $item1, Rate $item2) {
-                if ($item1->getPrice() > $item2->getPrice()) {
+            $comparator = function ($price1, $price2) {
+                if ($price1 > $price2) {
                     return 1;
-                } elseif ($item2->getPrice() > $item1->getPrice()) {
+                } elseif ($price2 > $price1) {
                     return -1;
                 } else {
                     return 0;
                 }
             };
         } elseif ($type === Order::TYPE_BID) {
-            $comparator = function (Rate $item1, Rate $item2) {
-                if ($item1->getPrice() < $item2->getPrice()) {
+            $comparator = function ($price1, $price2) {
+                if ($price1 < $price2) {
                     return 1;
-                } elseif ($item2->getPrice() < $item1->getPrice()) {
+                } elseif ($price2 < $price1) {
                     return -1;
                 } else {
                     return 0;
@@ -126,6 +163,6 @@ class OrderBook
             throw new UnknownTypeException();
         }
 
-        return usort($current, $comparator);
+        $current->ksort($comparator);
     }
 }
