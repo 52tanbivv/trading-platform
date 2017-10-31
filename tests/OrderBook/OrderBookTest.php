@@ -1,11 +1,11 @@
 <?php
 
-namespace Xoptov\TradingPlatform\Tests;
+namespace Xoptov\TradingPlatform\Tests\OrderBook;
 
 use PHPUnit\Framework\TestCase;
 use Xoptov\TradingPlatform\Model\Rate;
-use Xoptov\TradingPlatform\OrderBook;
 use Xoptov\TradingPlatform\Model\Order;
+use Xoptov\TradingPlatform\OrderBook;
 
 class OrderBookTest extends TestCase
 {
@@ -16,7 +16,9 @@ class OrderBookTest extends TestCase
 			array(1.7270, 1),
 			array(1.7280, 1),
 			array(1.7271, 1),
-			array(1.7260, 3)
+			array(1.7260, 3),
+            array(1.7262, 1),
+            array(1.7281, 1)
 		);
 
 		$bids = array(
@@ -38,5 +40,21 @@ class OrderBookTest extends TestCase
 			$rate = new Rate($bid[0], $bid[1]);
 			$orderBook->add(Order::TYPE_BID, $rate);
 		}
+
+		unset($ask, $bid, $rate);
+
+		$highBid = $orderBook->getHighestBid();
+		$this->assertEquals($bids[1][0], $highBid->getPrice());
+
+		$lowAsk = $orderBook->getLowestAsk();
+		$this->assertEquals($asks[4][0], $lowAsk->getPrice());
+
+		$result = $orderBook->remove(Order::TYPE_ASK, 1.7261);
+		$this->assertTrue($result);
+		$this->assertCount(6, $orderBook->getAsks());
+
+		$orderBook->clean();
+		$this->assertCount(0, $orderBook->getAsks());
+        $this->assertCount(0, $orderBook->getBids());
 	}
 }

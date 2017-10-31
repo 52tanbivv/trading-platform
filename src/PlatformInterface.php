@@ -3,7 +3,10 @@
 namespace Xoptov\TradingPlatform;
 
 use Xoptov\TradingPlatform\Trader\TraderInterface;
-use Xoptov\TradingPlatform\Model\Order;
+use Xoptov\TradingPlatform\Model\CurrencyPair;
+use Xoptov\TradingPlatform\Model\Currency;
+use Xoptov\TradingPlatform\Chart\Chart;
+use Xoptov\TradingPlatform\Model\Rate;
 
 interface PlatformInterface
 {
@@ -19,57 +22,27 @@ interface PlatformInterface
     public function attach(TraderInterface $trader);
 
     /**
-     * @param callable $handler
+     * @return Currency[]
      */
-    public function getCurrencies(callable $handler);
+    public function getCurrencies();
 
     /**
-     * @param callable $handler
+     * @return CurrencyPair[]
      */
-    public function getCurrencyPairs(callable $handler);
+    public function getCurrencyPairs();
 
     /**
-     * @param callable $handler
+     * @return Chart
      */
-    public function getChart(callable $handler);
+    public function getChart();
 
     /**
-     * @param callable $handler
+     * @return Rate[]
      */
-    public function getOrderBook(callable $handler);
+    public function getAsks();
 
     /**
-     * @param callable $handler
+     * @return Rate[]
      */
-    public function getTicker(callable $handler);
-
-    /**
-     * @param callable $handler
-     */
-    public function getTradeHistory(callable $handler);
-
-    /**
-     * @param Account $account
-     * @param callable $handler
-     */
-    public function getBalance(Account $account, callable $handler);
-
-    /**
-     * @param Account $account
-     * @param callable $handler
-     */
-    public function getOpenOrders(Account $account, callable $handler);
-
-    /**
-     * @param Account $account
-     * @param callable $handler
-     */
-    public function placeOrder(Account $account, callable  $handler);
-
-    /**
-     * @param Account $account
-     * @param Order $order
-     * @param callable $handler
-     */
-    public function cancelOrder(Account $account, Order $order, callable $handler);
+    public function getBids();
 }

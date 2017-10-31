@@ -46,95 +46,9 @@ class Platform implements PlatformInterface
             throw new NoTradersException();
         }
 
-        // Binding message handler from provider.
-        foreach ($this->traders as $trader) {
-
-            // Bind tick message if trader support it.
-            if ($trader->supportChannels() & ProviderInterface::CHANNEL_TICKER) {
-                $this->provider->bindChannel("tick", array($trader, "onTick"));
-            }
-
-            // Bind order book message if trader support it.
-            if ($trader->supportChannels() & ProviderInterface::CHANNEL_ORDER_BOOK) {
-                $this->provider->bindChannel("orderBook", array($trader, "onOrderBook"));
-            }
-
-            // Bind trade message if trader support it.
-            if ($trader->supportChannels() & ProviderInterface::CHANNEL_TRADE) {
-                $this->provider->bindChannel("trade", array($trader, "opnTrade"));
-            }
-        }
+        //TODO: need implement binding for traders.
 
         // Starting event loop in provider.
         $this->provider->start();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrencies(callable $handler)
-    {
-        // TODO: Implement getCurrencies() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrencyPairs(callable $handler)
-    {
-        // TODO: Implement getCurrencyPairs() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMarketData(callable $handler)
-    {
-        // TODO: Implement getMarketData() method.
-    }
-
-    public function getOrderBook(callable $handler)
-    {
-        // TODO: Implement getOrderBook() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTicker(callable $handler)
-    {
-        // TODO: Implement getTicker() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTradeHistory(callable $handler)
-    {
-        // TODO: Implement getTradeHistory() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBalance(Account $account, callable $handler)
-    {
-        // TODO: Implement getBalance() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOpenOrders(Account $account, callable $handler)
-    {
-        // TODO: Implement getOpenOrders() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function placeOrder(Account $account, callable $handler)
-    {
-        // TODO: Implement placeOrder() method.
     }
 }
