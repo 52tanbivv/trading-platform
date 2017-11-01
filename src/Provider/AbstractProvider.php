@@ -23,6 +23,9 @@ use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsRespo
 
 abstract class AbstractProvider implements ProviderInterface
 {
+    /** @var bool */
+    private $started = false;
+
 	/** @var int Limit requests per second. */
 	private $rps;
 
@@ -57,7 +60,15 @@ abstract class AbstractProvider implements ProviderInterface
 		$this->rps = $rps;
 	}
 
-	/**
+    /**
+     * {@inheritdoc}
+     */
+	public function isStarted()
+    {
+        return $this->started;
+    }
+
+    /**
 	 * {@inheritdoc}
 	 */
 	public function bindChannel($type, SplObserver $observer)
@@ -78,7 +89,15 @@ abstract class AbstractProvider implements ProviderInterface
 		return $this->supportChannels;
 	}
 
-	/**
+	public function start()
+    {
+        // Vary important check.
+        if ($this->started) {
+            return;
+        }
+    }
+
+    /**
 	 * {@inheritdoc}
 	 */
 	public function __call($name, $arguments)

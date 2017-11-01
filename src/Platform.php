@@ -12,6 +12,9 @@ use Xoptov\TradingPlatform\Exception\NoTradersException;
 
 class Platform implements SplObserver
 {
+    /** @var boolean */
+    private $started = false;
+
 	/** @var ProviderInterface */
 	private $provider;
 
@@ -53,6 +56,14 @@ class Platform implements SplObserver
     }
 
     /**
+     * @return bool
+     */
+    public function isStarted()
+    {
+        return $this->started;
+    }
+
+    /**
      * {@inheritdoc}
      */
 	public function attach(TraderInterface $trader)
@@ -79,6 +90,10 @@ class Platform implements SplObserver
      */
     public function start()
     {
+        if ($this->started) {
+            return;
+        }
+
         if ($this->traders->isEmpty()) {
             throw new NoTradersException();
         }
@@ -95,15 +110,16 @@ class Platform implements SplObserver
         /** @var TraderInterface $trader */
 	    foreach ($this->traders as $trader) {
 			foreach ($this->provider->getSupportChannels() as $type) {
-				if (!@$trader->isSupportMessage($type)) {
-					continue;
+				if ($trader->isSupportMessage($type)) {
+                    $this->provider->bindChannel($type, $trader);
 				}
-
-				$this->provider->bindChannel($type, $trader);
 			}
         }
 
         //TODO: implement starting data receiving from market for pre filling important data.
+
+        // Switch platform in started mode.
+        $this->started = true;
 
         // Starting event loop in provider.
         $this->provider->start();

@@ -2,7 +2,9 @@
 
 namespace Xoptov\TradingPlatform\Trader;
 
-interface TraderInterface extends \SplObserver
+use SplObserver;
+
+interface TraderInterface extends SplObserver
 {
     /**
      * @param int $type

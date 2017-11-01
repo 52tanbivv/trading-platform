@@ -51,4 +51,9 @@ interface ProviderInterface
 	 * @return mixed
 	 */
     public function __call($name, $arguments);
+
+    /**
+     * @return boolean
+     */
+    public function isStarted();
 }
