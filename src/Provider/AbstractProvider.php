@@ -21,18 +21,6 @@ use Xoptov\TradingPlatform\Response\PlaceOrder\Response as PlaceOrderResponse;
 use Xoptov\TradingPlatform\Response\TradeHistory\Response as TradeHistoryResponse;
 use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsResponse;
 
-/**
- * @method CurrenciesResponse currencies()
- * @method CurrencyPairsResponse currencyPairs()
- * @method MarketDataResponse marketData()
- * @method TickerResponse ticker()
- * @method TradeHistoryResponse tradeHistory()
- * @method OrderBookResponse orderBook()
- * @method BalanceResponse balance(Account $account)
- * @method OpenOrdersResponse openOrders(Account $account)
- * @method PlaceOrderResponse placeOrder(Order $order, Account $account)
- * @method bool cancelOrder(int $orderId, Account $account)
- */
 abstract class AbstractProvider implements ProviderInterface
 {
 	/** @var int Limit requests per second. */

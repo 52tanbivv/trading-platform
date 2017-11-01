@@ -18,6 +18,24 @@ class Platform implements SplObserver
 	/** @var SplDoublyLinkedList */
 	private $traders;
 
+	/** @var DataContainer */
+	private $currencies;
+
+	/** @var DataContainer */
+	private $currencyPairs;
+
+	/** @var DataContainer */
+	private $marketData;
+
+	/** @var DataContainer */
+	private $ticker;
+
+	/** @var DataContainer */
+	private $tradeHistory;
+
+	/** @var DataContainer */
+	private $chart;
+
     /**
      * Platform constructor.
      * @param ProviderInterface $provider
@@ -26,6 +44,12 @@ class Platform implements SplObserver
     {
         $this->provider = $provider;
         $this->traders = new SplDoublyLinkedList();
+        $this->currencies = new DataContainer(86400);
+        $this->currencyPairs = new DataContainer(86400);
+        $this->marketData = new DataContainer(180);
+        $this->ticker = new DataContainer(30);
+        $this->tradeHistory = new DataContainer(30);
+        $this->chart = new DataContainer(3600);
     }
 
     /**
@@ -91,5 +115,25 @@ class Platform implements SplObserver
     public function update(SplSubject $subject)
     {
 		return;
+    }
+
+    /**
+     * @return SplDoublyLinkedList
+     */
+    public function getCurrencies()
+    {
+        if ($this->currencies->isFresh()) {
+            $currencies = clone ($this->currencies)();
+
+            return $currencies;
+        }
+
+        $response = $this->provider->currencies();
+
+        if ($response) {
+            //TODO: need implement handling response.
+        }
+
+        //TODO: need return result data.
     }
 }
