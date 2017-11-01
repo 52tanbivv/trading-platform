@@ -2,23 +2,32 @@
 
 namespace Xoptov\TradingPlatform\Response\Ticker;
 
-use Xoptov\TradingPlatform\Model\CurrencyPair;
+use SplDoublyLinkedList;
 use Xoptov\TradingPlatform\Model\Tick;
+use Xoptov\TradingPlatform\Model\CurrencyPair;
 
 class Response
 {
-    /** @var Tick[] */
-    private $ticks = array();
+    /** @var SplDoublyLinkedList */
+    private $ticks;
 
     /**
-     * @return Tick[]
+     * Response constructor.
+     */
+    public function __construct()
+    {
+        $this->ticks = new SplDoublyLinkedList();
+    }
+
+    /**
+     * @return SplDoublyLinkedList
      */
     public function getTicks()
     {
-        $ticks = array();
+        $ticks = new SplDoublyLinkedList();
 
         foreach ($this->ticks as $tick) {
-            $ticks[] = clone $tick;
+            $ticks->push(clone $tick);
         }
 
         return $ticks;
@@ -32,12 +41,9 @@ class Response
      * @param float $baseVolume
      * @param float $quoteVolume
      * @param float $change
-     * @return int
      */
     public function addTick(CurrencyPair $currencyPair, $last, $lowAsk, $highBid, $baseVolume, $quoteVolume, $change)
     {
-        $tick = new Tick($currencyPair, $last, $lowAsk, $highBid, $baseVolume, $quoteVolume, $change);
-
-        return array_push($this->ticks, $tick);
+        $this->ticks->push(new Tick($currencyPair, $last, $lowAsk, $highBid, $baseVolume, $quoteVolume, $change));
     }
 }

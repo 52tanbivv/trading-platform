@@ -2,22 +2,32 @@
 
 namespace Xoptov\TradingPlatform\Response\TradeHistory;
 
+use DateTime;
+use SplDoublyLinkedList;
 use Xoptov\TradingPlatform\Model\Trade;
 
 class Response
 {
-    /** @var Trade[] */
-    private $trades = array();
+    /** @var SplDoublyLinkedList */
+    private $trades;
 
     /**
-     * @return Trade[]
+     * Response constructor.
+     */
+    public function __construct()
+    {
+        $this->trades = new SplDoublyLinkedList();
+    }
+
+    /**
+     * @return SplDoublyLinkedList
      */
     public function getTrades()
     {
-        $trades = array();
+        $trades = new SplDoublyLinkedList();
 
         foreach ($this->trades as $trade) {
-            $trades[] = clone $trade;
+            $trades->push(clone $trade);
         }
 
         return $trades;
@@ -28,13 +38,10 @@ class Response
      * @param string $type
      * @param float $price
      * @param float $volume
-     * @param \DateTime $createdAt
-     * @return int
+     * @param DateTime $createdAt
      */
-    public function addTrade($id, $type, $price, $volume, \DateTime $createdAt)
+    public function addTrade($id, $type, $price, $volume, DateTime $createdAt)
     {
-        $trade = new Trade($id, $type, $price, $volume, $createdAt);
-
-        return array_push($this->trades, $trade);
+        $this->trades->push(new Trade($id, $type, $price, $volume, $createdAt));
     }
 }

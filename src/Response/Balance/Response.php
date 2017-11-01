@@ -2,23 +2,32 @@
 
 namespace Xoptov\TradingPlatform\Response\Balance;
 
+use SplDoublyLinkedList;
 use Xoptov\TradingPlatform\Model\Currency;
 use Xoptov\TradingPlatform\Model\Active;
 
 class Response
 {
-	/** @var Active[] */
+	/** @var SplDoublyLinkedList */
 	private $actives;
 
-	/**
-	 * @return Active[]
+    /**
+     * Response constructor.
+     */
+	public function __construct()
+    {
+        $this->actives = new SplDoublyLinkedList();
+    }
+
+    /**
+	 * @return SplDoublyLinkedList
 	 */
 	public function getActives()
 	{
-		$actives = array();
+		$actives = new SplDoublyLinkedList();
 
 		foreach ($this->actives as $active) {
-			$actives[] = clone $active;
+			$actives->push(clone $active);
 		}
 
 		return $actives;
@@ -27,12 +36,9 @@ class Response
 	/**
 	 * @param Currency $currency
 	 * @param float $volume
-	 * @return int
 	 */
 	public function addActive(Currency $currency, $volume)
 	{
-		$active = new Active($currency, $volume);
-
-		return array_push($this->actives, $active);
+		$this->actives->push(new Active($currency, $volume));
 	}
 }

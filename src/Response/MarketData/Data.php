@@ -2,6 +2,7 @@
 
 namespace Xoptov\TradingPlatform\Response\MarketData;
 
+use DatePeriod;
 use Xoptov\TradingPlatform\Chart\AbstractPeriod;
 
 class Data extends AbstractPeriod
@@ -22,7 +23,7 @@ class Data extends AbstractPeriod
      * @param float $quoteVolume
      * @param float $weightedAverage
      */
-    public function __construct($open, $close, $high, $low, \DatePeriod $period, $baseVolume, $quoteVolume, $weightedAverage)
+    public function __construct($open, $close, $high, $low, DatePeriod $period, $baseVolume, $quoteVolume, $weightedAverage)
     {
         parent::__construct($open, $close, $high, $low, $period);
 

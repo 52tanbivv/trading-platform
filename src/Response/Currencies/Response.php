@@ -2,29 +2,42 @@
 
 namespace Xoptov\TradingPlatform\Response\Currencies;
 
+use SplDoublyLinkedList;
+
 class Response
 {
-	/** @var Currency[] */
-	private $currencies = array();
+	/** @var SplDoublyLinkedList */
+	private $currencies;
 
-	/**
-	 * @return Currency[]
+    /**
+     * Response constructor.
+     */
+	public function __construct()
+    {
+        $this->currencies = new SplDoublyLinkedList();
+    }
+
+    /**
+	 * @return SplDoublyLinkedList
 	 */
 	public function getCurrencies()
 	{
-		$currencies = array();
+		$currencies = new SplDoublyLinkedList();
 
 		foreach ($this->currencies as $currency) {
-			$currencies[] = clone $currency;
+			$currencies->push(clone $currency);
 		}
 
 		return $currencies;
 	}
 
+    /**
+     * @param string $symbol
+     * @param string $name
+     * @param boolean $enabled
+     */
 	public function addCurrency($symbol, $name, $enabled)
 	{
-		$currency = new Currency($symbol, $name, $enabled);
-
-		return array_push($this->currencies, $currency);
+		$this->currencies->push(new Currency($symbol, $name, $enabled));
 	}
 }

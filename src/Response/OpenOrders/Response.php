@@ -2,20 +2,30 @@
 
 namespace Xoptov\TradingPlatform\Response\OpenOrders;
 
+use SplDoublyLinkedList;
+
 class Response
 {
-	/** @var Order[] */
-	private $orders = array();
+	/** @var SplDoublyLinkedList */
+	private $orders;
 
-	/**
-	 * @return Order[]
+    /**
+     * Response constructor.
+     */
+	public function __construct()
+    {
+        $this->orders = new SplDoublyLinkedList();
+    }
+
+    /**
+	 * @return SplDoublyLinkedList
 	 */
 	public function getOrders()
 	{
-		$orders = array();
+		$orders = new SplDoublyLinkedList();
 
 		foreach ($this->orders as $order) {
-			$orders[] = clone $order;
+			$orders->push(clone $order);
 		}
 
 		return $orders;
@@ -29,8 +39,6 @@ class Response
 	 */
 	public function addOrder($id, $price, $volume)
 	{
-		$order = new Order($id, $price, $volume);
-
-		return array_push($this->orders, $order);
+		$this->orders->push(new Order($id, $price, $volume));
 	}
 }
