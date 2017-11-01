@@ -2,19 +2,21 @@
 
 namespace Xoptov\TradingPlatform\Channel;
 
-use \SplDoublyLinkedList;
+use SplSubject;
+use SplObserver;
+use SplDoublyLinkedList;
 use Xoptov\TradingPlatform\Message\MessageInterface;
 
-class PushChannel implements \SplSubject
+class PushChannel implements SplSubject
 {
-    /** @var SplDoublyLinkedList */
+	/** @var int */
+	private $type;
+
+	/** @var SplDoublyLinkedList */
     private $observers;
 
-    /** @var MessageInterface */
+	/** @var MessageInterface */
     private $message;
-
-    /** @var int */
-    private $type;
 
 	/**
 	 * PushChannel constructor.
@@ -22,15 +24,15 @@ class PushChannel implements \SplSubject
 	 */
     public function __construct($type)
     {
-    	$this->observers = new SplDoublyLinkedList();
-    	$this->type = $type;
+	    $this->type = $type;
+	    $this->observers = new SplDoublyLinkedList();
     }
 
 	/**
 	 * {@inheritdoc}
 	 * @return bool
 	 */
-    public function attach(\SplObserver $observer)
+    public function attach(SplObserver $observer)
     {
 		foreach ($this->observers as $attached) {
 			if ($attached === $observer) {
@@ -47,7 +49,7 @@ class PushChannel implements \SplSubject
 	 * {@inheritdoc}
 	 * @return bool
 	 */
-    public function detach(\SplObserver $observer)
+    public function detach(SplObserver $observer)
     {
 		foreach ($this->observers as $key => $attached) {
 			if ($attached === $observer) {
@@ -84,6 +86,28 @@ class PushChannel implements \SplSubject
     	$this->message = $message;
 
     	return $this;
+    }
+
+	/**
+	 * @return int
+	 */
+    public function getType()
+    {
+    	return $this->type;
+    }
+
+	/**
+	 * @return null|MessageInterface
+	 */
+    public function getMessage()
+    {
+    	if (empty($this->message)) {
+    		return null;
+	    }
+
+    	$message = clone $this->message;
+
+    	return $message;
     }
 
     public function clean()

@@ -4,6 +4,7 @@ namespace Xoptov\TradingPlatform\Provider;
 
 use SplObserver;
 use Xoptov\TradingPlatform\Account;
+use Xoptov\TradingPlatform\Channel\PushChannel;
 use Xoptov\TradingPlatform\Model\Order;
 use Xoptov\TradingPlatform\Response\Ticker\Response as TickerResponse;
 use Xoptov\TradingPlatform\Response\Balance\Response as BalanceResponse;
@@ -11,9 +12,9 @@ use Xoptov\TradingPlatform\Response\OrderBook\Response as OrderBookResponse;
 use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
 use Xoptov\TradingPlatform\Response\MarketData\Response as MarketDataResponse;
 use Xoptov\TradingPlatform\Response\OpenOrders\Response as OpenOrdersResponse;
+use Xoptov\TradingPlatform\Response\PlaceOrder\Response as PlaceOrderResponse;
 use Xoptov\TradingPlatform\Response\TradeHistory\Response as TradeHistoryResponse;
 use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsResponse;
-use Xoptov\TradingPlatform\Response\PlaceOrder\Response as PlaceOrderResponse;
 
 interface ProviderInterface
 {
@@ -23,15 +24,15 @@ interface ProviderInterface
     public function start();
 
     /**
+     * @param int $type
      * @param SplObserver $observer
-     * @return boolean
      */
-    public function bindChannel(SplObserver $observer);
+    public function bindChannel($type, SplObserver $observer);
 
 	/**
-	 * @param SplObserver $observer
+	 * @return array
 	 */
-    public function bindAllChannels(SplObserver $observer);
+    public function getSupportChannels();
 
     /**
      * @return CurrenciesResponse

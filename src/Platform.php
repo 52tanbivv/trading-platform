@@ -5,6 +5,7 @@ namespace Xoptov\TradingPlatform;
 use SplSubject;
 use SplObserver;
 use SplDoublyLinkedList;
+use Xoptov\TradingPlatform\Message\MessageInterface;
 use Xoptov\TradingPlatform\Trader\TraderInterface;
 use Xoptov\TradingPlatform\Provider\ProviderInterface;
 use Xoptov\TradingPlatform\Exception\NoTradersException;
@@ -24,7 +25,6 @@ class Platform implements SplObserver
     public function __construct(ProviderInterface $provider)
     {
         $this->provider = $provider;
-        $this->provider->bindAllChannels($this);
         $this->traders = new SplDoublyLinkedList();
     }
 
@@ -59,7 +59,27 @@ class Platform implements SplObserver
             throw new NoTradersException();
         }
 
-        //TODO: need implement binding for traders.
+        // Bind platform to ticker channel for message processing.
+        $this->provider->bindChannel(MessageInterface::TYPE_TICKER, $this);
+
+        // Bind platform to order book channel for message processing.
+        $this->provider->bindChannel(MessageInterface::TYPE_ORDER_BOOK, $this);
+
+        // Bind platform to trade channel for message processing.
+        $this->provider->bindChannel(MessageInterface::TYPE_TRADE, $this);
+
+        /** @var TraderInterface $trader */
+	    foreach ($this->traders as $trader) {
+			foreach ($this->provider->getSupportChannels() as $type) {
+				if (!@$trader->isSupportMessage($type)) {
+					continue;
+				}
+
+				$this->provider->bindChannel($type, $trader);
+			}
+        }
+
+        //TODO: implement starting data receiving from market for pre filling important data.
 
         // Starting event loop in provider.
         $this->provider->start();
