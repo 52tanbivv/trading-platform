@@ -2,7 +2,7 @@
 
 namespace Xoptov\TradingPlatform\Provider;
 
-class Poloniex
+class PoloniexProvider extends AbstractProvider
 {
 
 }

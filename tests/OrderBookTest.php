@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoptov\TradingPlatform\Tests\OrderBook;
+namespace Xoptov\TradingPlatform\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Xoptov\TradingPlatform\Model\Rate;

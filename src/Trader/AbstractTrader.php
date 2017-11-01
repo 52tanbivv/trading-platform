@@ -3,37 +3,37 @@
 namespace Xoptov\TradingPlatform\Trader;
 
 use Xoptov\TradingPlatform\Account;
-use Xoptov\TradingPlatform\PlatformInterface;
+use Xoptov\TradingPlatform\Platform;
 
 abstract class AbstractTrader implements TraderInterface
 {
     /** @var Account */
     private $account;
 
-    /** @var PlatformInterface */
+    /** @var Platform */
     private $platform;
 
     /** @var array */
-    private $supportChannels;
+    private $supportMessages;
 
     /**
      * AbstractTrader constructor.
      * @param Account $account
-     * @param PlatformInterface $platform
-     * @param array $supportChannels
+     * @param Platform $platform
+     * @param array $supportMessages
      */
-    public function __construct(Account $account, PlatformInterface $platform, array $supportChannels = array())
+    public function __construct(Account $account, Platform $platform, array $supportMessages = array())
     {
         $this->account = $account;
         $this->platform = $platform;
-        $this->supportChannels = $supportChannels;
+        $this->supportMessages = $supportMessages;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportChannels()
+    public function isSupportMessage($type)
     {
-        return array_sum($this->supportChannels);
+        return in_array($type, $this->supportMessages);
     }
 }

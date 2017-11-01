@@ -2,16 +2,19 @@
 
 namespace Xoptov\TradingPlatform;
 
-use Xoptov\TradingPlatform\Exception\NoTradersException;
-use Xoptov\TradingPlatform\Provider\ProviderInterface;
+use SplSubject;
+use SplObserver;
+use SplDoublyLinkedList;
 use Xoptov\TradingPlatform\Trader\TraderInterface;
+use Xoptov\TradingPlatform\Provider\ProviderInterface;
+use Xoptov\TradingPlatform\Exception\NoTradersException;
 
-class Platform implements PlatformInterface
+class Platform implements SplObserver
 {
 	/** @var ProviderInterface */
 	private $provider;
 
-	/** @var TraderInterface[] */
+	/** @var SplDoublyLinkedList */
 	private $traders;
 
     /**
@@ -21,6 +24,8 @@ class Platform implements PlatformInterface
     public function __construct(ProviderInterface $provider)
     {
         $this->provider = $provider;
+        $this->provider->bindAllChannels($this);
+        $this->traders = new SplDoublyLinkedList();
     }
 
     /**
@@ -28,11 +33,19 @@ class Platform implements PlatformInterface
      */
 	public function attach(TraderInterface $trader)
     {
-        if (in_array($trader, $this->traders)) {
-            return false;
+        if ($this->traders->isEmpty()) {
+        	$this->traders->push($trader);
+
+        	return true;
         }
 
-        $this->traders[] = $trader;
+        foreach ($this->traders as $attached) {
+        	if ($attached === $trader) {
+        		return false;
+	        }
+        }
+
+		$this->traders->push($trader);
 
         return true;
     }
@@ -42,7 +55,7 @@ class Platform implements PlatformInterface
      */
     public function start()
     {
-        if (empty($this->traders)) {
+        if ($this->traders->isEmpty()) {
             throw new NoTradersException();
         }
 
@@ -50,5 +63,13 @@ class Platform implements PlatformInterface
 
         // Starting event loop in provider.
         $this->provider->start();
+    }
+
+	/**
+	 * {@inheritdoc}
+	 */
+    public function update(SplSubject $subject)
+    {
+		return;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Xoptov\TradingPlatform\Message;
 
-class OrderBook
+class OrderBook implements MessageInterface
 {
     /** @var string */
     private $type;

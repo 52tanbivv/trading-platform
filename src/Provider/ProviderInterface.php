@@ -2,6 +2,7 @@
 
 namespace Xoptov\TradingPlatform\Provider;
 
+use SplObserver;
 use Xoptov\TradingPlatform\Account;
 use Xoptov\TradingPlatform\Model\Order;
 use Xoptov\TradingPlatform\Response\Ticker\Response as TickerResponse;
@@ -16,21 +17,21 @@ use Xoptov\TradingPlatform\Response\PlaceOrder\Response as PlaceOrderResponse;
 
 interface ProviderInterface
 {
-    const CHANNEL_TICKER = 1;
-    const CHANNEL_ORDER_BOOK = 2;
-    const CHANNEL_TRADE = 4;
-
     /**
      * @return void
      */
     public function start();
 
     /**
-     * @param string $channel
-     * @param callable $handler
+     * @param SplObserver $observer
      * @return boolean
      */
-    public function bindChannel($channel, callable $handler);
+    public function bindChannel(SplObserver $observer);
+
+	/**
+	 * @param SplObserver $observer
+	 */
+    public function bindAllChannels(SplObserver $observer);
 
     /**
      * @return CurrenciesResponse

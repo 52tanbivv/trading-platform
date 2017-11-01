@@ -5,7 +5,7 @@ namespace Xoptov\TradingPlatform\Message;
 use Xoptov\TradingPlatform\Model\CurrencyPair;
 use Xoptov\TradingPlatform\Model\Tick as OriginTick;
 
-class Tick extends OriginTick
+class Tick extends OriginTick implements MessageInterface
 {
     /** @var float */
     private $lowAskVolume;
