@@ -21,6 +21,18 @@ use Xoptov\TradingPlatform\Response\PlaceOrder\Response as PlaceOrderResponse;
 use Xoptov\TradingPlatform\Response\TradeHistory\Response as TradeHistoryResponse;
 use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsResponse;
 
+/**
+ * @method CurrenciesResponse currencies()
+ * @method CurrencyPairsResponse currencyPairs()
+ * @method MarketDataResponse marketData()
+ * @method TickerResponse ticker()
+ * @method TradeHistoryResponse tradeHistory()
+ * @method OrderBookResponse orderBook()
+ * @method BalanceResponse balance(Account $account)
+ * @method OpenOrdersResponse openOrders(Account $account)
+ * @method PlaceOrderResponse placeOrder(Order $order, Account $account)
+ * @method bool cancelOrder(int $orderId, Account $account)
+ */
 abstract class AbstractProvider implements ProviderInterface
 {
     /** @var bool */
@@ -40,7 +52,7 @@ abstract class AbstractProvider implements ProviderInterface
 	private $channels;
 
 	/** @var ClientInterface */
-	private $httpClient;
+	protected $httpClient;
 
 	/** @var DateTime Time of last request. */
 	private $lastRequestAt;
@@ -50,14 +62,13 @@ abstract class AbstractProvider implements ProviderInterface
 
 	/**
 	 * AbstractProvider constructor.
-	 * @param array $httpOptions
-	 * @param int $rps
+	 * @param array $options
 	 */
-	public function __construct(array $httpOptions, $rps)
+	public function __construct(array $options)
 	{
 		$this->channels = $this->createChannels();
-		$this->httpClient = new Client($httpOptions);
-		$this->rps = $rps;
+		$this->httpClient = new Client($options["http"]);
+		$this->rps = $options["rps"];
 	}
 
     /**
