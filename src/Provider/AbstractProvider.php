@@ -62,12 +62,13 @@ abstract class AbstractProvider implements ProviderInterface
 
 	/**
 	 * AbstractProvider constructor.
+	 * @param Client $client
 	 * @param array $options
 	 */
-	public function __construct(array $options)
+	public function __construct(Client $client, array $options)
 	{
 		$this->channels = $this->createChannels();
-		$this->httpClient = new Client($options["http"]);
+		$this->httpClient = $client;
 		$this->rps = $options["rps"];
 	}
 

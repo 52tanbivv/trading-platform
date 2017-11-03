@@ -4,9 +4,13 @@ namespace Xoptov\TradingPlatform\Provider;
 
 use Xoptov\TradingPlatform\Account;
 use Xoptov\TradingPlatform\Model\Order;
+use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
 
 class PoloniexProvider extends AbstractProvider
 {
+	/**
+	 * {@inheritdoc}
+	 */
     protected function requestCurrencies()
     {
         $response = $this->httpClient->get("public", array(
@@ -14,8 +18,28 @@ class PoloniexProvider extends AbstractProvider
         ));
 
         if ($response->getStatusCode() === 200) {
-            xdebug_break();
+            $json = json_decode($response->getBody());
+
+            if (empty($json)) {
+            	return null;
+            }
+
+            $response = new CurrenciesResponse();
+
+            foreach ($json as $symbol => $description) {
+            	if ($description->disabled == 0 && $description->delisted == 0 && $description->frozen == 0) {
+            		$enabled = true;
+	            } else {
+            		$enabled = false;
+	            }
+
+            	$response->addCurrency($symbol, $description->name, $enabled);
+            }
+
+            return $response;
         }
+
+        return null;
     }
 
     protected function requestCurrencyPair()
