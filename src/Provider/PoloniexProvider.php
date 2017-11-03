@@ -3,8 +3,10 @@
 namespace Xoptov\TradingPlatform\Provider;
 
 use Xoptov\TradingPlatform\Account;
+use Xoptov\TradingPlatform\DataContainer;
 use Xoptov\TradingPlatform\Model\Order;
 use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
+
 
 class PoloniexProvider extends AbstractProvider
 {
@@ -42,9 +44,27 @@ class PoloniexProvider extends AbstractProvider
         return null;
     }
 
-    protected function requestCurrencyPair()
+    /**
+     * {@inheritdoc}
+     */
+    protected function requestCurrencyPair(DataContainer $currencies)
     {
-        // TODO: Implement requestCurrencyPair() method.
+        $response = $this->httpClient->get("public", array(
+            "query" => array("command" => "return24hVolume")
+        ));
+
+        if ($response->getStatusCode() === 200) {
+            $json = json_decode($response->getBody(), true);
+
+            if (empty($json)) {
+                return null;
+            }
+
+
+            return $response;
+        }
+
+        return null;
     }
 
     protected function requestMarketData()

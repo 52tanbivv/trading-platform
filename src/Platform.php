@@ -5,17 +5,20 @@ namespace Xoptov\TradingPlatform;
 use SplSubject;
 use SplObserver;
 use SplDoublyLinkedList;
+use Xoptov\TradingPlatform\Exception\UnresolvedDataException;
 use Xoptov\TradingPlatform\Message\MessageInterface;
+use Xoptov\TradingPlatform\Provider\AbstractProvider;
 use Xoptov\TradingPlatform\Trader\TraderInterface;
 use Xoptov\TradingPlatform\Provider\ProviderInterface;
 use Xoptov\TradingPlatform\Exception\NoTradersException;
+use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
 
 class Platform implements SplObserver
 {
     /** @var boolean */
     private $started = false;
 
-	/** @var ProviderInterface */
+	/** @var AbstractProvider */
 	private $provider;
 
 	/** @var SplDoublyLinkedList */
@@ -139,17 +142,38 @@ class Platform implements SplObserver
     public function getCurrencies()
     {
         if ($this->currencies->isFresh()) {
-            $currencies = clone ($this->currencies)();
-
-            return $currencies;
+            return clone ($this->currencies)();
         }
 
+        /** @var CurrenciesResponse $response */
         $response = $this->provider->currencies();
 
         if ($response) {
-            //TODO: need implement handling response.
+            ($this->currencies)($response->getCurrencies());
+
+            return clone ($this->currencies)();
         }
 
-        //TODO: need return result data.
+        return null;
+    }
+
+    public function getCurrencyPairs()
+    {
+        if ($this->currencyPairs->isFresh()) {
+            return clone ($this->currencyPairs)();
+        }
+
+        if (!$this->currencies->isFresh()) {
+            throw new UnresolvedDataException();
+        }
+
+        $currencies = clone ($this->currencies)();
+
+        /** @var  $response */
+        $response = $this->provider->currencyPairs($currencies);
+
+        if ($response) {
+            //TODO: make this hell work!
+        }
     }
 }

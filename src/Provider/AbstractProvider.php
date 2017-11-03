@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use SplDoublyLinkedList;
 use GuzzleHttp\ClientInterface;
 use Xoptov\TradingPlatform\Account;
+use Xoptov\TradingPlatform\DataContainer;
 use Xoptov\TradingPlatform\Model\Order;
 use Xoptov\TradingPlatform\Channel\PushChannel;
 use Xoptov\TradingPlatform\Message\MessageInterface;
@@ -23,7 +24,7 @@ use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsRespo
 
 /**
  * @method CurrenciesResponse currencies()
- * @method CurrencyPairsResponse currencyPairs()
+ * @method CurrencyPairsResponse currencyPairs(DataContainer $currencies)
  * @method MarketDataResponse marketData()
  * @method TickerResponse ticker()
  * @method TradeHistoryResponse tradeHistory()
@@ -130,9 +131,10 @@ abstract class AbstractProvider implements ProviderInterface
 	abstract protected function requestCurrencies();
 
 	/**
+     * @param DataContainer $currencies
 	 * @return CurrencyPairsResponse
 	 */
-	abstract protected function requestCurrencyPair();
+	abstract protected function requestCurrencyPair(DataContainer $currencies);
 
 	/**
 	 * @return MarketDataResponse
