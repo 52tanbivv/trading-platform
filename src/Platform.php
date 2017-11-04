@@ -4,14 +4,16 @@ namespace Xoptov\TradingPlatform;
 
 use SplSubject;
 use SplObserver;
+use DeepCopy\DeepCopy;
 use SplDoublyLinkedList;
-use Xoptov\TradingPlatform\Exception\UnresolvedDataException;
+use Xoptov\TradingPlatform\Trader\TraderInterface;
 use Xoptov\TradingPlatform\Message\MessageInterface;
 use Xoptov\TradingPlatform\Provider\AbstractProvider;
-use Xoptov\TradingPlatform\Trader\TraderInterface;
 use Xoptov\TradingPlatform\Provider\ProviderInterface;
 use Xoptov\TradingPlatform\Exception\NoTradersException;
+use Xoptov\TradingPlatform\Exception\UnresolvedDataException;
 use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
+use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsResponse;
 
 class Platform implements SplObserver
 {
@@ -42,6 +44,9 @@ class Platform implements SplObserver
 	/** @var DataContainer */
 	private $chart;
 
+	/** @var DeepCopy */
+	private $copier;
+
     /**
      * Platform constructor.
      * @param ProviderInterface $provider
@@ -56,6 +61,7 @@ class Platform implements SplObserver
         $this->ticker = new DataContainer(30);
         $this->tradeHistory = new DataContainer(30);
         $this->chart = new DataContainer(3600);
+        $this->copier = new DeepCopy();
     }
 
     /**
@@ -137,43 +143,56 @@ class Platform implements SplObserver
     }
 
     /**
-     * @return SplDoublyLinkedList
+     * @return SplDoublyLinkedList|null Return copy of data retrieved from provider.
      */
     public function getCurrencies()
     {
         if ($this->currencies->isFresh()) {
-            return clone ($this->currencies)();
+            if ($currencies = $this->currencies->getData()) {
+                return $currencies;
+            }
         }
 
         /** @var CurrenciesResponse $response */
         $response = $this->provider->currencies();
-
         if ($response) {
-            ($this->currencies)($response->getCurrencies());
+            // Store data in container.
+            $this->currencies->setData($response->getCurrencies());
 
-            return clone ($this->currencies)();
+            return $this->copier->copy($response->getCurrencies());
         }
 
         return null;
     }
 
+    /**
+     * @return SplDoublyLinkedList|null Return copy of data retrieved from provider.
+     */
     public function getCurrencyPairs()
     {
-        if ($this->currencyPairs->isFresh()) {
-            return clone ($this->currencyPairs)();
+        if ($currencyPairs = $this->currencyPairs->getData()) {
+            return $currencyPairs;
         }
+
+        unset($currencyPairs);
 
         if (!$this->currencies->isFresh()) {
-            throw new UnresolvedDataException();
+            $currencies = $this->getCurrencies();
+            if (!$currencies) {
+                throw new UnresolvedDataException();
+            }
+        } else {
+            $currencies = $this->currencies->getData();
         }
 
-        $currencies = clone ($this->currencies)();
-
-        /** @var  $response */
+        /** @var CurrencyPairsResponse $response */
         $response = $this->provider->currencyPairs($currencies);
-
         if ($response) {
-            //TODO: make this hell work!
+            $this->currencyPairs->setData($response->getCurrencyPairs());
+
+            return $this->copier->copy($response->getCurrencyPairs());
         }
+
+        return null;
     }
 }

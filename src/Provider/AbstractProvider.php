@@ -8,10 +8,10 @@ use GuzzleHttp\Client;
 use SplDoublyLinkedList;
 use GuzzleHttp\ClientInterface;
 use Xoptov\TradingPlatform\Account;
-use Xoptov\TradingPlatform\DataContainer;
 use Xoptov\TradingPlatform\Model\Order;
 use Xoptov\TradingPlatform\Channel\PushChannel;
 use Xoptov\TradingPlatform\Message\MessageInterface;
+use Xoptov\TradingPlatform\Exception\QueryCountExceededException;
 use Xoptov\TradingPlatform\Response\Ticker\Response as TickerResponse;
 use Xoptov\TradingPlatform\Response\Balance\Response as BalanceResponse;
 use Xoptov\TradingPlatform\Response\OrderBook\Response as OrderBookResponse;
@@ -24,7 +24,7 @@ use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsRespo
 
 /**
  * @method CurrenciesResponse currencies()
- * @method CurrencyPairsResponse currencyPairs(DataContainer $currencies)
+ * @method CurrencyPairsResponse currencyPairs(SplDoublyLinkedList $currencies)
  * @method MarketDataResponse marketData()
  * @method TickerResponse ticker()
  * @method TradeHistoryResponse tradeHistory()
@@ -116,7 +116,7 @@ abstract class AbstractProvider implements ProviderInterface
 	public function __call($name, $arguments)
 	{
 		if (!$this->checkRequestsLimit()) {
-			return null;
+			throw new QueryCountExceededException("Too many requests per second.");
 		}
 
 		$response = call_user_func(array($this, "request" . $name), $arguments);
@@ -131,10 +131,10 @@ abstract class AbstractProvider implements ProviderInterface
 	abstract protected function requestCurrencies();
 
 	/**
-     * @param DataContainer $currencies
+     * @param SplDoublyLinkedList $currencies
 	 * @return CurrencyPairsResponse
 	 */
-	abstract protected function requestCurrencyPair(DataContainer $currencies);
+	abstract protected function requestCurrencyPair(SplDoublyLinkedList $currencies);
 
 	/**
 	 * @return MarketDataResponse

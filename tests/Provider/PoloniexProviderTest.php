@@ -52,11 +52,4 @@ class PoloniexProviderTest extends TestCase
 		$this->assertInstanceOf(CurrenciesResponse::class, $response);
 		$this->assertCount(3, $response->getCurrencies());
 	}
-
-    public function testCurrencyPairs()
-    {
-        $content = "
-            
-        ";
-    }
 }

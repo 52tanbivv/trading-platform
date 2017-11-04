@@ -2,11 +2,11 @@
 
 namespace Xoptov\TradingPlatform\Provider;
 
+use SplDoublyLinkedList;
 use Xoptov\TradingPlatform\Account;
-use Xoptov\TradingPlatform\DataContainer;
 use Xoptov\TradingPlatform\Model\Order;
 use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
-
+use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairResponse;
 
 class PoloniexProvider extends AbstractProvider
 {
@@ -47,7 +47,7 @@ class PoloniexProvider extends AbstractProvider
     /**
      * {@inheritdoc}
      */
-    protected function requestCurrencyPair(DataContainer $currencies)
+    protected function requestCurrencyPair(SplDoublyLinkedList $currencies)
     {
         $response = $this->httpClient->get("public", array(
             "query" => array("command" => "return24hVolume")
@@ -60,6 +60,12 @@ class PoloniexProvider extends AbstractProvider
                 return null;
             }
 
+            $response = new CurrencyPairResponse();
+
+            foreach ($json as $pairData) {
+                $symbols = array_keys($pairData);
+
+            }
 
             return $response;
         }
