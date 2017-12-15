@@ -4,23 +4,22 @@ namespace Xoptov\TradingPlatform\Provider;
 
 use DateTime;
 use SplObserver;
-use GuzzleHttp\Client;
 use SplDoublyLinkedList;
-use GuzzleHttp\ClientInterface;
-use Xoptov\TradingPlatform\Account;
-use Xoptov\TradingPlatform\Model\Order;
+use Xoptov\TradingCore\Model\Order;
+use Xoptov\TradingCore\Model\Account;
+use Xoptov\TradingCore\ConnectorInterface;
 use Xoptov\TradingPlatform\Channel\PushChannel;
 use Xoptov\TradingPlatform\Message\MessageInterface;
 use Xoptov\TradingPlatform\Exception\QueryCountExceededException;
-use Xoptov\TradingPlatform\Response\Ticker\Response as TickerResponse;
-use Xoptov\TradingPlatform\Response\Balance\Response as BalanceResponse;
-use Xoptov\TradingPlatform\Response\OrderBook\Response as OrderBookResponse;
-use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
-use Xoptov\TradingPlatform\Response\MarketData\Response as MarketDataResponse;
-use Xoptov\TradingPlatform\Response\OpenOrders\Response as OpenOrdersResponse;
-use Xoptov\TradingPlatform\Response\PlaceOrder\Response as PlaceOrderResponse;
-use Xoptov\TradingPlatform\Response\TradeHistory\Response as TradeHistoryResponse;
-use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsResponse;
+use Xoptov\TradingCore\Response\Ticker\Response as TickerResponse;
+use Xoptov\TradingCore\Response\Balance\Response as BalanceResponse;
+use Xoptov\TradingCore\Response\OrderBook\Response as OrderBookResponse;
+use Xoptov\TradingCore\Response\Currencies\Response as CurrenciesResponse;
+use Xoptov\TradingCore\Response\MarketData\Response as MarketDataResponse;
+use Xoptov\TradingCore\Response\OpenOrders\Response as OpenOrdersResponse;
+use Xoptov\TradingCore\Response\PlaceOrder\Response as PlaceOrderResponse;
+use Xoptov\TradingCore\Response\TradeHistory\Response as TradeHistoryResponse;
+use Xoptov\TradingCore\Response\CurrencyPairs\Response as CurrencyPairsResponse;
 
 /**
  * @method CurrenciesResponse currencies()
@@ -52,8 +51,8 @@ abstract class AbstractProvider implements ProviderInterface
 	/** @var SplDoublyLinkedList */
 	private $channels;
 
-	/** @var ClientInterface */
-	protected $httpClient;
+	/** @var ConnectorInterface */
+	private $connector;
 
 	/** @var DateTime Time of last request. */
 	private $lastRequestAt;
@@ -63,13 +62,13 @@ abstract class AbstractProvider implements ProviderInterface
 
 	/**
 	 * AbstractProvider constructor.
-	 * @param Client $client
+	 * @param ConnectorInterface $connector
 	 * @param array $options
 	 */
-	public function __construct(Client $client, array $options)
+	public function __construct(ConnectorInterface $connector, array $options)
 	{
 		$this->channels = $this->createChannels();
-		$this->httpClient = $client;
+		$this->connector = $connector;
 		$this->rps = $options["rps"];
 	}
 
@@ -119,68 +118,20 @@ abstract class AbstractProvider implements ProviderInterface
 			throw new QueryCountExceededException("Too many requests per second.");
 		}
 
-		$response = call_user_func(array($this, "request" . $name), $arguments);
-		$this->countingRequests();
+		$method = "request" . $name;
 
-		return $response;
+		if (method_exists($this->connector, $method)) {
+            $response = call_user_func(array($this->connector, ), $arguments);
+
+            if ($response) {
+                $this->countingRequests();
+
+                return $response;
+            }
+        }
+
+		return null;
 	}
-
-	/**
-	 * @return CurrenciesResponse
-	 */
-	abstract protected function requestCurrencies();
-
-	/**
-     * @param SplDoublyLinkedList $currencies
-	 * @return CurrencyPairsResponse
-	 */
-	abstract protected function requestCurrencyPair(SplDoublyLinkedList $currencies);
-
-	/**
-	 * @return MarketDataResponse
-	 */
-	abstract protected function requestMarketData();
-
-	/**
-	 * @return TickerResponse
-	 */
-	abstract protected function requestTicker();
-
-	/**
-	 * @return TradeHistoryResponse
-	 */
-	abstract protected function requestTradeHistory();
-
-	/**
-	 * @return OrderBookResponse
-	 */
-	abstract protected function requestOrderBook();
-
-	/**
-	 * @param Account $account
-	 * @return BalanceResponse
-	 */
-	abstract protected function requestBalance(Account $account);
-
-	/**
-	 * @param Account $account
-	 * @return OpenOrdersResponse
-	 */
-	abstract protected function requestOpenOrders(Account $account);
-
-	/**
-	 * @param Order $order
-	 * @param Account $account
-	 * @return PlaceOrderResponse
-	 */
-	abstract protected function requestPlaceOrder(Order $order, Account $account);
-
-	/**
-	 * @param int $orderId
-	 * @param Account $account
-	 * @return bool
-	 */
-	abstract protected function requestCancelOrder($orderId, Account $account);
 
 	/**
 	 * @param int $type

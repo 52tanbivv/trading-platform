@@ -6,14 +6,15 @@ use SplSubject;
 use SplObserver;
 use DeepCopy\DeepCopy;
 use SplDoublyLinkedList;
+use Xoptov\TradingCore\DataContainer;
 use Xoptov\TradingPlatform\Trader\TraderInterface;
 use Xoptov\TradingPlatform\Message\MessageInterface;
 use Xoptov\TradingPlatform\Provider\AbstractProvider;
 use Xoptov\TradingPlatform\Provider\ProviderInterface;
 use Xoptov\TradingPlatform\Exception\NoTradersException;
 use Xoptov\TradingPlatform\Exception\UnresolvedDataException;
-use Xoptov\TradingPlatform\Response\Currencies\Response as CurrenciesResponse;
-use Xoptov\TradingPlatform\Response\CurrencyPairs\Response as CurrencyPairsResponse;
+use Xoptov\TradingCore\Response\Currencies\Response as CurrenciesResponse;
+use Xoptov\TradingCore\Response\CurrencyPairs\Response as CurrencyPairsResponse;
 
 class Platform implements SplObserver
 {
@@ -125,7 +126,7 @@ class Platform implements SplObserver
 			}
         }
 
-        //TODO: implement starting data receiving from market for pre filling important data.
+        //TODO: implement starting core receiving from market for preload important core.
 
         // Switch platform in started mode.
         $this->started = true;
@@ -143,7 +144,7 @@ class Platform implements SplObserver
     }
 
     /**
-     * @return SplDoublyLinkedList|null Return copy of data retrieved from provider.
+     * @return SplDoublyLinkedList|null Return copy of core retrieved from provider.
      */
     public function getCurrencies()
     {
@@ -156,7 +157,7 @@ class Platform implements SplObserver
         /** @var CurrenciesResponse $response */
         $response = $this->provider->currencies();
         if ($response) {
-            // Store data in container.
+            // Store core in container.
             $this->currencies->setData($response->getCurrencies());
 
             return $this->copier->copy($response->getCurrencies());
@@ -166,7 +167,7 @@ class Platform implements SplObserver
     }
 
     /**
-     * @return SplDoublyLinkedList|null Return copy of data retrieved from provider.
+     * @return SplDoublyLinkedList|null Return copy of core retrieved from provider.
      */
     public function getCurrencyPairs()
     {

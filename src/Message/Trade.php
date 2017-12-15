@@ -2,7 +2,7 @@
 
 namespace Xoptov\TradingPlatform\Message;
 
-use Xoptov\TradingPlatform\Model\Trade as OriginTrade;
+use Xoptov\TradingCore\Model\Trade as OriginTrade;
 
 class Trade extends OriginTrade implements MessageInterface
 {

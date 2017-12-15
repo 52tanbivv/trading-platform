@@ -2,8 +2,8 @@
 
 namespace Xoptov\TradingPlatform\Trader;
 
-use Xoptov\TradingPlatform\Account;
 use Xoptov\TradingPlatform\Platform;
+use Xoptov\TradingCore\Model\Account;
 
 abstract class AbstractTrader implements TraderInterface
 {

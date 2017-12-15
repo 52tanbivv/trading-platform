@@ -6,18 +6,22 @@
     "authors": [
         {
             "name": "Maksim Khortov",
-            "email": "xoptov@mail.ru"
+            "email": "xoptov@mail.ru",
+            "role": "Developer"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Xoptov\\TradingPlatform\\": "src/",
+            "Xoptov\\TradingPlatform\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Xoptov\\TradingPlatform\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",
     "require": {
-        "guzzlehttp/guzzle": "^6.3",
         "myclabs/deep-copy": "^1.7"
     },
     "require-dev": {
